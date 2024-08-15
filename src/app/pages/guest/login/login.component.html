@@ -1,0 +1,22 @@
+<div class="flex justify-content-center align-items-center min-h-screen">
+    <form [formGroup]="frm" (ngSubmit)="onSubmit()" class="card flex flex-column gap-3 p-4"style="width: 400px;" >
+        <a class="flex justify-content-center">Giriş Yap</a>
+        <p-inputGroup>
+            <p-inputGroupAddon>
+                <i class="pi pi-user"></i>
+            </p-inputGroupAddon>
+            <input type="text" pInputText placeholder="Username" formControlName="username" />
+        </p-inputGroup>
+
+        <p-inputGroup>
+            <p-inputGroupAddon> <i class="pi pi-key"></i> </p-inputGroupAddon>
+            <input type="password" pInputText placeholder="Password" formControlName="password" />
+        </p-inputGroup>
+
+        <div class="flex justify-content-center">
+            <button pButton  icon="pi pi-sign-in" label="Giriş Yap" [loading]="loading"></button>
+        </div>
+        
+    </form>
+
+</div>
