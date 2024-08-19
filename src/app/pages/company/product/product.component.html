@@ -4,10 +4,10 @@
         <ng-template pTemplate="left">
             <p-button
                 severity="success" 
-                label="New" 
+                label="Ürün Ekle" 
                 icon="pi pi-plus" 
                 class="mr-2" 
-                (onClick)="openNew()" />
+                [routerLink]="['/company/product/addproduct']" />
             <p-button
                 severity="danger" 
                 label="Delete" 
@@ -106,7 +106,7 @@
                         [rounded]="true" 
                         [outlined]="true" 
                         severity="success" 
-                        (onClick)="editproduct(product)" />
+                        routerLink="/company/product/productdetail"/>
                     <p-button 
                         icon="pi pi-trash" 
                         severity="danger" 

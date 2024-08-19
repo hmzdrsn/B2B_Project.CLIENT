@@ -18,7 +18,7 @@ export class AuthService {
 
   login(frm: FormGroup) {
     this.loadingSubject.next(true); // İstek başlamadan önce loading'i true yapın
-    this.httpClient.post<any>("https://localhost:7146/api/User/Login", frm.value).subscribe(res => {
+    this.httpClient.post<any>("https://localhost:8001/api/User/Login", frm.value).subscribe(res => {
         console.log(res);
         localStorage.setItem("token", res.data.token.accessToken);
 

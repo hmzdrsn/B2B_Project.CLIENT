@@ -19,12 +19,17 @@ import { FormsModule } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ProductService } from '../../../services/product.service';
 import { Product } from '../../../services/models/ProductResponse';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-product',
     templateUrl: './product.component.html',
     standalone: true,
-    imports: [TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule],
+    imports: [TableModule, DialogModule, RippleModule, 
+      ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, 
+      InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, 
+      DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, 
+      FormsModule, InputNumberModule,RouterModule],
     providers: [ConfirmationService],
 })
 export class ProductComponent implements OnInit{
@@ -55,7 +60,7 @@ export class ProductComponent implements OnInit{
   }
 
   openNew() {
-      //this.product = {};
+      this.product = {...this.product};
       this.submitted = false;
       this.productDialog = true;
   }
@@ -101,6 +106,8 @@ export class ProductComponent implements OnInit{
       // this.product içerisine doluyor.
       //UPDATE PRODUCT İŞLEMİ
   }
+
+
   
   @ViewChild('dt') dt!: Table;
   onFilter(event: Event): void {

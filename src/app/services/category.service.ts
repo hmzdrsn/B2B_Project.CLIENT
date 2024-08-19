@@ -2,17 +2,17 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { map, Observable } from "rxjs";
 import { ResponseModel } from "./models/Response";
-import { Order, OrderResponse } from "./models/OrderResponse";
+import { Category, CategoryResponse } from "./models/CategoryResponse";
 
 @Injectable({
     providedIn:"root"
 })
-export class OrderService {
+export class CategoryService {
     httpClient: HttpClient = inject(HttpClient);
 
 
-    getCompanyOrders () : Observable<OrderResponse<Order[]>>{
-        return this.httpClient.get<ResponseModel<OrderResponse<Order[]>>>("https://localhost:8001/api/Order/GetOrdersByCompany")
+    getCategories () : Observable<CategoryResponse<Category[]>>{
+        return this.httpClient.get<ResponseModel<CategoryResponse<Category[]>>>("https://localhost:8001/api/Category")
         .pipe(map(res=>res.data))
     }
 }

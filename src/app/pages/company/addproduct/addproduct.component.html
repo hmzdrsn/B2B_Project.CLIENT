@@ -1,0 +1,68 @@
+<div class="card p-4 mt-3">
+    <form [formGroup]="productForm">
+        <div class="grid p-fluid">
+            <div class="col-12 md:col-6 mb-4">
+                <p-floatLabel>
+                    <input pInputText formControlName="name" />
+                    <label for="name">Name</label>
+                </p-floatLabel>
+            </div>
+
+            <div class="col-12 md:col-6">
+                <p-floatLabel>
+                    <input pInputText formControlName="description" />
+                    <label for="description">Description</label>
+                </p-floatLabel>
+            </div>
+            <div class="col-12 md:col-6 mb-4">
+                <p-floatLabel>
+                    <p-inputNumber formControlName="price" [minFractionDigits]="2" [maxFractionDigits]="2"></p-inputNumber>
+                    <label for="price">Price</label>
+                </p-floatLabel>
+            </div>
+
+            <div class="col-12 md:col-6">
+                <p-floatLabel>
+                    <input pInputText formControlName="productCode" />
+                    <label for="productCode">Product Code</label>
+                </p-floatLabel>
+            </div>
+
+            <div class="col-12 md:col-6 mb-4">
+                <p-floatLabel>
+                    <p-inputNumber formControlName="stock" [min]="0"></p-inputNumber>
+                    <label for="stock">Stock</label>
+                </p-floatLabel>
+            </div>
+
+            <div class="col-12 md:col-6">
+                <p-floatLabel>
+                    <p-dropdown [options]="categories" optionLabel="name" formControlName="categoryId"></p-dropdown>
+                    <label for="categoryId">Category</label>
+                </p-floatLabel>
+            </div>
+
+            <div class="col-12">
+                <p-fileUpload 
+                mode="advanced" 
+                name="productImages" 
+                multiple="true" 
+                maxFileSize="1000000" 
+                chooseLabel="Ürün Resmi Ekle" 
+                uploadLabel="Upload"
+                (onUpload)="onUpload($event)"
+                cancelLabel="İptal Et"
+                (onSelect)="onSelect($event)"
+                (onRemove)="onRemove($event)"
+                [showUploadButton]="false"
+                >
+            </p-fileUpload>
+            </div>
+
+        </div>
+
+        <div class="mt-2">
+            <p-button label="Kaydet" (onClick)="submitForm()" icon="pi pi-check"></p-button>
+        </div>
+    </form>
+</div>
