@@ -93,10 +93,10 @@
                     {{ product.description }}
                 </td>
                 <td>
-                    {{ product.price | currency : 'USD' }}
+                    {{ product.price | currency : 'TRY ' }}
                 </td>
                 <td>
-                    {{ product.stock | currency : 'USD' }}
+                    {{ product.stock }}
                 </td>
                 
                 <td>
@@ -106,7 +106,7 @@
                         [rounded]="true" 
                         [outlined]="true" 
                         severity="success" 
-                        routerLink="/company/product/productdetail"/>
+                        (onClick)="editProduct(product)" />
                     <p-button 
                         icon="pi pi-trash" 
                         severity="danger" 

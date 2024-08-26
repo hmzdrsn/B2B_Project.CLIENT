@@ -1,0 +1,81 @@
+<div class="card p-4 mt-3">
+    <form *ngIf="productForm" [formGroup]="productForm">
+        <div class="grid p-fluid">
+            <div class="col-12 md:col-6 mb-4">
+                <p-floatLabel>
+                    <input pInputText formControlName="name" required/>
+                    <label for="name">Name</label>
+                </p-floatLabel>
+            </div>
+
+            <div class="col-12 md:col-6">
+                <p-floatLabel>
+                    <input pInputText formControlName="description" required/>
+                    <label for="description">Description</label>
+                </p-floatLabel>
+            </div>
+            <div class="col-12 md:col-6 mb-4">
+                <p-floatLabel>
+                    <p-inputNumber formControlName="price" [minFractionDigits]="2" [maxFractionDigits]="2" required></p-inputNumber>
+                    <label for="price">Price</label>
+                </p-floatLabel>
+            </div>
+
+            <div class="col-12 md:col-6">
+                <p-floatLabel>
+                    <input pInputText formControlName="productCode" required />
+                    <label for="productCode">Product Code</label>
+                </p-floatLabel>
+            </div>
+
+            <div class="col-12 md:col-6 mb-4">
+                <p-floatLabel>
+                    <p-inputNumber formControlName="stock" [min]="0" required></p-inputNumber>
+                    <label for="stock">Stock</label>
+                </p-floatLabel>
+            </div>
+
+            <div class="col-12 md:col-6">
+                    <!-- <p-dropdown [options]="categories" optionLabel="name" formControlName="categoryId" -->
+
+                      <p-dropdown [options]="categories" optionLabel="name" formControlName="categoryId" placeholder="{{selectedCategory.name}}"
+                      required
+                      >
+                      </p-dropdown>
+              </div>
+              <div class="col-12">
+
+                <p-fileUpload
+                mode="advanced" 
+                name="productImages" 
+                multiple="true" 
+                maxFileSize="1000000" 
+                chooseLabel="Ürün Resmi Ekle" 
+                uploadLabel="Upload"
+                cancelLabel="İptal Et"
+                (onSelect)="onSelect($event)"
+                (onRemove)="onRemove($event)"
+                [showUploadButton]="false"
+                >
+                 <ng-template pTemplate="content">
+                    <a>Ürün Resimleri</a>
+                    <div class="gap-3" *ngFor="let item of Images">
+                        <div class="flex justify-content-between mb-3">
+                            <img style="width: 50px; height: 50px; border-radius: 20px;" src="{{item.imageUrl}}">
+                            <a>{{item.imageName}}</a>
+                            <div>
+                                <button icon="fa-close" pButton type="button" label="Resmi Sil" (click)="onDelete(item.id)"></button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                </p-fileUpload>
+            </div>
+        </div>
+
+
+        <div class="mt-2">
+            <p-button label="Kaydet" (onClick)="submitForm()" icon="pi pi-check"></p-button>
+        </div>
+    </form>
+</div>

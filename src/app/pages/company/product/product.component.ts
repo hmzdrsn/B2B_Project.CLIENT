@@ -19,7 +19,7 @@ import { FormsModule } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ProductService } from '../../../services/product.service';
 import { Product } from '../../../services/models/ProductResponse';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-product',
@@ -34,7 +34,7 @@ import { RouterModule } from '@angular/router';
 })
 export class ProductComponent implements OnInit{
   _productService : ProductService = inject(ProductService);
-
+  _router : Router = inject(Router);
   productDialog: boolean = false;
 
   productList : Product[];
@@ -51,7 +51,6 @@ export class ProductComponent implements OnInit{
     this._productService.getCompanyProducts().subscribe(
       (response) => {
         this.productList = response.products;
-        console.log('Ürünler başarıyla alındı:', response.products);
       },
       (error) => {
         console.error('Ürünler alınırken hata oluştu:', error);
@@ -85,13 +84,14 @@ export class ProductComponent implements OnInit{
 
   deleteproduct(product: Product) {
       this.confirmationService.confirm({
-          message: 'Are you sure you want to delete ' + product.name + '?',
-          header: 'Confirm',
+          message: product.name + ' adlı ürünü silmek istediğinize emin misiniz?',
+          header: 'Dikkat',
           icon: 'pi pi-exclamation-triangle',
           accept: () => {
               this.productList = this.productList.filter((val) => val.name !== product.name);
               //this.product = {};
-              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+              this._productService.deleteProduct(product.productId)
+              this.messageService.add({ severity: 'error', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
           }
       });
   }
@@ -114,6 +114,11 @@ export class ProductComponent implements OnInit{
     const inputElement = event.target as HTMLInputElement;
     const value = inputElement.value;
     this.dt.filterGlobal(value, 'contains');
+}
+
+
+editProduct(product: Product){
+this._router.navigate(['/company/product/updateproduct'],{queryParams:{productId:product.productId}})
 }
 
 }
