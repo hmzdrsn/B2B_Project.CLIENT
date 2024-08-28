@@ -4,11 +4,13 @@ import { map, Observable, of } from "rxjs";
 import { Product, ProductResponse, ProductResponse2, UpdateProductModel } from "./models/ProductResponse";
 import { ResponseModel } from "./models/Response";
 import { GlobalmessageService } from "./globalmessage.service";
+import { Router } from "@angular/router";
 @Injectable({
     providedIn:"root"
 })
 export class ProductService {
     _httpClient: HttpClient = inject(HttpClient);
+    _router : Router = inject(Router)
     constructor(private _messagesService:GlobalmessageService) {
       
     }
@@ -40,6 +42,7 @@ export class ProductService {
      updateProduct(formData : FormData){debugger
       this._httpClient.post('https://localhost:8001/api/Product/UpdateProduct',formData).subscribe(res=>{
         this._messagesService.addMessage('success','','Ürün Güncellendi')
+        this._router.navigateByUrl('company/product')
       }),
       err=>{
         console.log(err);

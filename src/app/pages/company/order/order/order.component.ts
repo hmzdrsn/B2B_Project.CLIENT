@@ -1,173 +1,120 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
-import { RippleModule } from 'primeng/ripple';
-import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
-import { ToolbarModule } from 'primeng/toolbar';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { CommonModule } from '@angular/common';
-import { FileUploadModule } from 'primeng/fileupload';
-import { DropdownModule } from 'primeng/dropdown';
 import { TagModule } from 'primeng/tag';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { RatingModule } from 'primeng/rating';
-import { FormsModule } from '@angular/forms';
-import { InputNumberModule } from 'primeng/inputnumber';
+import { ButtonModule } from 'primeng/button';
 import { OrderService } from '../../../../services/order.service';
-import { Order } from '../../../../services/models/OrderResponse';
-
+import { Order, UpdateOrder, UpdateOrderDetails, UpdateOrderStatus } from '../../../../services/models/OrderResponse';
+import {FormsModule} from '@angular/forms';
+import { OrderstatusService } from '../../../../services/orderstatus.service';
+import { DropdownModule } from 'primeng/dropdown';
+import { Status } from '../../../../services/models/OrderStatusResponse';
+import { GlobalmessageService } from '../../../../services/globalmessage.service';
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule],
+  imports: [TableModule, CommonModule,TagModule,ButtonModule,DialogModule,InputTextModule,FormsModule ,DropdownModule],
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss',
-  providers:[MessageService, ConfirmationService]
+  providers:[MessageService]
 })
 export class OrderComponent implements OnInit {
- 
-   _orderService : OrderService = inject(OrderService);
-  // ngOnInit(): void {
-  //   this._orderService.getCompanyOrders().subscribe((response)=>{
-  //     this.orderList = response.orders;
-  //     console.log(this.orderList);
-  //   },
-  //   (error) => {
-  //     console.error('Error fetching orders', error);
-  //   })
-  // }
+  _orderService : OrderService = inject(OrderService);
+  _orderStatusService: OrderstatusService= inject(OrderstatusService);
+  _messageService : GlobalmessageService = inject(GlobalmessageService);
+  visible: boolean = false;
 
-  orderDialog: boolean = false;
+  orderStatuses: Status[];
+  selectedStatus :Status;
+  orders :Order[];
+  updateOrderModel :UpdateOrder = new UpdateOrder();
+  updateOrderDetail : UpdateOrderDetails[];
+  
 
-  orders : Order[];
-
-  order!: Order;
-
-  selectedOrders!: Order[] | null;
-
-  submitted: boolean = false;
-
-  statuses!: any[];
-
-  constructor( private messageService: MessageService, private confirmationService: ConfirmationService) {}
-
-  ngOnInit() {
+  constructor(){}
+  ngOnInit(): void {
+    //instance from group
+    // this.updateForm =this.fb.group({
+    //   address: '',
+    //   totalPrice: 0,
+    //   orderCode : '',
+    //   orderDate : null,
+    //   orderStatus : '',
+    //   orderDetails: this.fb.array([])
+    // })
+   
+    this._orderService.getCompanyOrders().subscribe(res=>{
+      this.orders = res.orders;
+    })
+  }
+  selectedOrderId:string;
+  editOrder(x: string) {
+    this.selectedOrderId = x;
+    this._orderService.getOrderById(x).subscribe(res=>{
+      this.updateOrderModel = res;
       
 
-      this.statuses = [
-          { label: 'Sipariş Alındı', value: 'Sipariş Alındı' },
-          { label: 'Sipariş Teslim Edildi', value: 'Sipariş Teslim Edildi' },
-          { label: 'Sipariş Kargoya Verildi', value: 'shipped' },
-          { label: 'Sipariş Onaylandı', value: 'approved' },
-      ];
+      this._orderStatusService.getAll().subscribe(res=>{
+        this.orderStatuses = res.status
+        console.log(this.orderStatuses);
+        
+      })
+
+
+
+    this.showDialog();
+
+    })
+
+    
+
+}
+
+  onSubmit(){
+    let statusModel: UpdateOrderStatus = new UpdateOrderStatus()
+    statusModel.orderId = this.selectedOrderId
+    statusModel.orderStatusId = this.selectedStatus.id
+    let res = this._orderService.updateOrderStatus(statusModel).subscribe(res=>{
+      this.hideDialog()
+      window.location.reload();
       
-      this._orderService.getCompanyOrders().subscribe((response)=>{
-             this.orders = response.orders;
-             console.log(this.orders);
-           },
-           (error) => {
-             console.error('Error fetching orders', error);
-           })
+    },err=>{
+      this._messageService.addMessage('error','Hata!',`${this.selectedStatus.status}`)
+    })
   }
-
-  openNew() {
-      //this.order = {};
-      this.submitted = false;
-      this.orderDialog = true;
+  showDialog() {
+      this.visible = true;
   }
-
-  deleteselectedOrders() {
-      this.confirmationService.confirm({
-          message: 'Are you sure you want to delete the selected products?',
-          header: 'Confirm',
-          icon: 'pi pi-exclamation-triangle',
-          accept: () => {
-              this.orders = this.orders.filter((val) => !this.selectedOrders?.includes(val));
-              this.selectedOrders = null;
-              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-          }
-      });
+  hideDialog(){
+    this.visible = false;
   }
-
-  editorder(order: Order) {
-      this.order = { ...order };
-      this.orderDialog = true;
+  selectStatus(){
+    console.log(this.selectedStatus);
+    
   }
-
-  deleteorder(product: Order) {
-      this.confirmationService.confirm({
-          message: 'Are you sure you want to delete ' + product.name + '?',
-          header: 'Confirm',
-          icon: 'pi pi-exclamation-triangle',
-          accept: () => {
-              this.orders = this.orders.filter((val) => val.name !== product.name);
-              //this.order = {};
-              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-          }
-      });
+  getSeverity(event):any{
+    let severity = 'info';
+    switch(event){
+        case 'Sipariş Alındı':{
+            severity = 'danger'
+            break;
+        }
+        case 'Sipariş Teslim Edildi': {
+            severity = 'success'
+            break;
+        }
+        case 'Sipariş Kargoya Verildi': {
+          severity = 'info'
+          break;
+        }
+        case 'Sipariş Onaylandı': {
+          severity = 'warning'
+          break;
+        }
+    }
+    return severity;
   }
-
-  hideDialog() {
-      this.orderDialog = false;
-      this.submitted = false;
-  }
-
-  saveorder() {
-      this.submitted = true;
-
-      if (this.order.name?.trim()) {
-          if (this.order.name) {
-              this.orders[this.findIndexById(this.order.name)] = this.order;
-              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-          } else {
-              this.order.name = this.createId();
-              this.order.name = 'product-placeholder.svg';
-              this.orders.push(this.order);
-              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-          }
-
-          this.orders = [...this.orders];
-          this.orderDialog = false;
-          //this.order = {};
-      }
-  }
-
-  findIndexById(id: string): number {
-      let index = -1;
-      for (let i = 0; i < this.orders.length; i++) {
-          if (this.orders[i].name === id) {
-              index = i;
-              break;
-          }
-      }
-
-      return index;
-  }
-
-  createId(): string {
-      let id = '';
-      var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      for (var i = 0; i < 5; i++) {
-          id += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return id;
-  }
-
-  getSeverity(status: string) : any{
-      switch (status) {
-          case 'Sipariş Alındı':
-              return 'danger';
-          case 'Sipariş Onaylandı':
-              return 'warning';
-          case 'Sipariş Kargoya Verildi':
-              return 'danger';
-          case 'Sipariş Teslim Edildi':
-              return 'danger';    
-      }
-  }
-
 }

@@ -36,7 +36,7 @@ export class MenubarComponent {
                 [
                     {
                         items: [
-                            { label: 'Ürün Detayı', icon: 'pi pi-list', subtext: 'Ürün Detayları',routerLink:"/company/product/123" },
+                            { label: 'Ürün Ekle', icon: 'pi pi-plus', subtext: '',routerLink:"/company/product/addproduct" },
                         ]
                     }
                 ]
