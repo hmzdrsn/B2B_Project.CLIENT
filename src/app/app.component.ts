@@ -2,7 +2,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import {  NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { NgIf } from '@angular/common';
 import { CompanyComponent } from './pages/company/company.component';
 import { LoginComponent } from './pages/guest/login/login.component';
@@ -14,7 +13,7 @@ import { GlobalmessageService } from './services/globalmessage.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ButtonModule,RouterOutlet,SidebarComponent,NgIf,LoginComponent,CompanyComponent,GuestComponent,ToastModule],
+  imports: [ButtonModule,RouterOutlet,NgIf,LoginComponent,CompanyComponent,GuestComponent,ToastModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers :[MessageService,GlobalmessageService]
@@ -23,7 +22,7 @@ export class AppComponent implements OnInit{
   pageMode = 2;
   constructor(private _authService: AuthService) {}
   async ngOnInit() {
-    await this._authService.authControl(); // Asenkron olarak authControl çağırıyoruz
+    //await this._authService.authControl(); // Asenkron olarak authControl çağırıyoruz
     if (this._authService.isAuthenticated) {
       this.pageMode = 1; // Oturum açmışsa CompanyComponent'i göster
     } else {

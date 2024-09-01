@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -11,49 +11,75 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthService {
   private loadingSubject = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingSubject.asObservable(); // Observable olarak expose edin
-
   isAuthenticated: boolean = false;
-
-  constructor(private httpClient: HttpClient, private router: Router) {}
-
-  login(frm: FormGroup) {
+  roles : any[] = [];
+  private httpClient = inject(HttpClient)
+  private router: Router = inject(Router);
+  async login(frm: FormGroup) : Promise<boolean>{
     this.loadingSubject.next(true); // İstek başlamadan önce loading'i true yapın
-    this.httpClient.post<any>("https://localhost:8001/api/User/Login", frm.value).subscribe(res => {
-        console.log(res);
+    try {
+        const res = await this.httpClient.post<any>("https://localhost:8001/api/User/Login", frm.value).toPromise();
+        
         localStorage.setItem("token", res.data.token.accessToken);
 
         // authControl'u çağırıp, ardından yönlendirme yapıyoruz.
-        this.authControl();
+        await this.authControl();
 
         // authControl sonrası isAuthenticated kontrolü
         if (this.isAuthenticated) {
-            this.router.navigateByUrl("/company");
+            return true;
         } else {
             // Giriş başarısız ise yapılacak işlemler (isteğe bağlı)
             console.error('Giriş başarısız.');
+            return false;
         }
-        this.loadingSubject.next(false); // İstek tamamlandığında loading'i false yapın
-    }, error => {
+    } catch (error) {
         // Hata durumunda yapılacak işlemler
         console.error('Login hatası:', error);
-        this.loadingSubject.next(false); // Hata durumunda da loading'i false yapın
-    });
+        return false;
+    } finally {
+        this.loadingSubject.next(false); // İstek tamamlandığında veya hata olduğunda loading'i false yapın
+    }
+}
+
+  logOut(){
+    localStorage.removeItem("token");
+    this.router.navigateByUrl("/login")
   }
 
-  authControl() {
+  async authControl() {
     let jwtHelper: JwtHelperService = new JwtHelperService();
     const token = localStorage.getItem("token");
-
+    
+    // Önce rolleri alıyoruz
+    await this.getUserRoles();
+    
     // Token'in geçerli olup olmadığını kontrol ediyoruz
     if (token && !jwtHelper.isTokenExpired(token)) {
         this.isAuthenticated = true;
     } else {
         this.isAuthenticated = false;
     }
+    }
+
+  getUserRoles(): Promise<any> {
+      return new Promise((resolve, reject) => {
+          this.httpClient.get<any[]>("https://localhost:8001/api/Role/GetUserRoles")
+          .subscribe(res => {
+              this.roles = res;
+              resolve(res);
+          }, err => {
+              reject(err);
+          });
+      });
   }
 
-  logOut(){
-    localStorage.removeItem("token");
-    this.router.navigateByUrl("/login")
-}
+  
+  public async getRoles() : Promise<any[]> {
+    if (this.roles.length === 0) {
+      // Eğer roller yüklenmemişse, rolleri yükleyin
+      await this.getUserRoles();
+    }
+    return this.roles;
+  }
 }

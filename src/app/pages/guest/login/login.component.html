@@ -1,22 +1,35 @@
 <div class="flex justify-content-center align-items-center min-h-screen">
     <form [formGroup]="frm" (ngSubmit)="onSubmit()" class="card flex flex-column gap-3 p-4"style="width: 400px;" >
-        <a class="flex justify-content-center">Giriş Yap</a>
-        <p-inputGroup>
+            <a class="flex justify-content-center">Giriş Yap</a>
+        <p-inputGroup class="login-inputs">
             <p-inputGroupAddon>
                 <i class="pi pi-user"></i>
             </p-inputGroupAddon>
-            <input type="text" pInputText placeholder="Username" formControlName="username" />
+            <input type="text" pInputText placeholder="Kullanıcı Adınız" formControlName="username" />
         </p-inputGroup>
 
-        <p-inputGroup>
+        <p-inputGroup class="login-inputs">
             <p-inputGroupAddon> <i class="pi pi-key"></i> </p-inputGroupAddon>
-            <input type="password" pInputText placeholder="Password" formControlName="password" />
+            <input type="password" pInputText placeholder="Şifreniz" formControlName="password" />
         </p-inputGroup>
 
-        <div class="flex justify-content-center">
-            <button pButton  icon="pi pi-sign-in" label="Giriş Yap" [loading]="loading"></button>
+        <div class="flex justify-content-center login-button">
+            <button pButton icon="pi pi-sign-in" label="Giriş Yap" [loading]="loading"></button>
         </div>
-        
+        <div class="flex justify-content-between add-links">
+            <span class="hover:text-primary cursor-pointer" routerLink="/"> Siteye Dön</span>
+            <span class="hover:text-primary cursor-pointer" routerLink="/"> Hesabım Yok</span>
+        </div>
     </form>
-
 </div>
+
+<style>
+
+    .login-inputs{
+        height: 40px;
+        width: 100%;
+    }
+    .login-button{
+        height: 50px;
+    }
+</style>

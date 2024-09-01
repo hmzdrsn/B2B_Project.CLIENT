@@ -1,19 +1,22 @@
 import { Routes } from '@angular/router';
 import { ErrorComponent } from './pages/error/components/error/error.component';
-import { GuestComponent } from './pages/guest/guest.component';
-import { AuthGuard } from './guards/auth.guard';
+import { CompanyGuard } from './guards/company.guard';
 
 export const routes: Routes = [
-    {   path:'',
+    {   path:'',//guest
         loadChildren : ()=> import('../app/pages/guest/guest.route').then(g=>g.guestRoutes),
     },
     {
         path: 'company',
         loadChildren :()=> import('../app/pages/company/company.routes').then(c=>c.companyRoutes),
-        canActivate:[AuthGuard]
+        canActivate:[CompanyGuard]
     },
-     {
-         path:'**',
-         component : ErrorComponent,
-     }
+    {
+        path: 'member',
+        loadChildren :()=> import('../app/pages/member/member.route').then(c=>c.memberRoutes)
+    },
+    {
+        path:'**',
+        component : ErrorComponent,
+    }
 ];

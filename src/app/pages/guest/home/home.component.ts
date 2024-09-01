@@ -1,11 +1,18 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { MenubarComponent } from '../../../layout/guest/menubar/menubar.component';
+import { CategorybarComponent } from '../../../layout/guest/categorybar/categorybar.component';
+import { ContentComponent } from '../../../layout/guest/content/content.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  imports: [RouterModule,MenubarComponent,CategorybarComponent,ContentComponent],
+  template:`
+  <app-menubar></app-menubar>
+  <app-categorybar></app-categorybar>
+  <app-content></app-content>
+  `
 })
 export class HomeComponent {
 

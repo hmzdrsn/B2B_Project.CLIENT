@@ -1,7 +1,6 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
-import { GlobalmessageService } from './globalmessage.service';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -10,7 +9,6 @@ import { AuthService } from './auth.service';
 export class HttpInterceptorService implements HttpInterceptor {
 
   constructor(private _authService: AuthService) {}
-  messageService = inject(GlobalmessageService);
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('token');
 
@@ -23,9 +21,12 @@ export class HttpInterceptorService implements HttpInterceptor {
     return next.handle(clonedRequest).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === HttpStatusCode.Unauthorized) {
-          console.log("Unauthorized calisti");
+          console.log("Yetkisiz Erişim");
           this._authService.logOut();
-          this.messageService.addMessage('success', '','Giriş Yapıldı')
+        }
+        else if(error.status===HttpStatusCode.Forbidden){
+          this._authService.logOut();
+          console.log("Erişiminiz Yasal Değil");
         }
         return throwError(() => error);
       })

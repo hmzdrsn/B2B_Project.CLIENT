@@ -4,7 +4,7 @@ import { LoginComponent } from './login/login.component';
 
 export const guestRoutes: Routes = [
     {
-        path : '', component: HomeComponent
+        path : '', component: HomeComponent,
     },
     {
         path: 'login',component: LoginComponent

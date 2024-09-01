@@ -1,0 +1,55 @@
+<div class="flex flex-wrap ml-3 gap-3">
+    <div class="card hover:text-primary overflow-hidden white-space-nowrap text-overflow-ellipsis cursor-pointer" *ngFor="let item of items">
+        <div class="card-image">
+            <img src="{{item.productUrl}}">
+        </div>
+        <span class="overflow-hidden white-space-nowrap text-overflow-ellipsis text-xl">{{item.productName}} </span>
+        <p class="overflow-hidden white-space-nowrap text-overflow-ellipsis text-sm">{{item.productDescription}} </p>
+        <span class="text-primary">{{item.productPrice}} TL</span>
+        <!-- <div>
+            <img
+                src="{{item.productUrl}}">
+        </div>
+
+        <div class="flex flex-column">
+            <div class="overflow-hidden white-space-nowrap text-overflow-ellipsis">
+                {{item.productName}}
+            </div>
+            <div class="text-overflowhidden text-xs">
+                {{item.productDescription}}
+            </div>
+            <div class="overflow-hidden">
+                {{item.productPrice}}
+            </div>
+        </div> -->
+    </div>
+</div>
+
+<p-paginator
+[totalRecords]="totalItems"
+[rows]="pageSize"
+(onPageChange)="onPageChange($event)"
+></p-paginator>
+
+
+<style>
+    .card{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 5px;
+        height: 240px;
+        width: 150px;
+    }
+   .card-image{
+    height: 60%;
+    border-radius: 5px;
+   }
+   .card-image img{
+    border-bottom: 1px solid rgb(216, 192, 148);
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+   }
+</style>

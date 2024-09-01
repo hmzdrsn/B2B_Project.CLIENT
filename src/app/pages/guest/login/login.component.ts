@@ -7,10 +7,11 @@ import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
 import { AuthService } from '../../../services/auth.service';
 import { GlobalmessageService } from '../../../services/globalmessage.service';
+import { Router, RouterLink } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, InputGroupModule, InputGroupAddonModule, InputTextModule,ButtonModule,ReactiveFormsModule,ToastModule],
+  imports: [FormsModule, InputGroupModule, InputGroupAddonModule, InputTextModule,ButtonModule,ReactiveFormsModule,ToastModule,RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   providers:[AuthService,GlobalmessageService]
@@ -20,6 +21,7 @@ export class LoginComponent {
   loading: boolean = false;
 
   messageService = inject(GlobalmessageService);
+  router = inject(Router);
   constructor(
     private formBuilder:FormBuilder,
     private authService:AuthService,
@@ -31,18 +33,22 @@ export class LoginComponent {
   }
 
 
-  onSubmit() {
+  async onSubmit() {
     this.loading=true;
     // Burada API'ye istek
-    this.authService.login(this.frm);
+    const res = await this.authService.login(this.frm);
 
-    this.authService.loading$.subscribe(loading => {
+    await this.authService.loading$.subscribe(loading => {
       this.loading = loading;
     });
-    this.show();
-  }
-
-  show() {
-    this.messageService.addMessage('success', '','Giriş Yapıldı')
+    
+    if(res){
+      this.router.navigateByUrl('/');
+      this.messageService.addMessage('success', '','Giriş Yapıldı')
+    }
+    else{
+      this.messageService.addMessage('error','','Giriş Başarısız')
+      
+    }
   }
 }

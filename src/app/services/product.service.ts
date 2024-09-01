@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { map, Observable, of } from "rxjs";
-import { Product, ProductResponse, ProductResponse2, UpdateProductModel } from "./models/ProductResponse";
+import { DefaultFilter, Product, ProductResponse, ProductResponse2, UpdateProductModel } from "./models/ProductResponse";
 import { ResponseModel } from "./models/Response";
 import { GlobalmessageService } from "./globalmessage.service";
 import { Router } from "@angular/router";
@@ -39,7 +39,7 @@ export class ProductService {
 
      }
      
-     updateProduct(formData : FormData){debugger
+     updateProduct(formData : FormData){
       this._httpClient.post('https://localhost:8001/api/Product/UpdateProduct',formData).subscribe(res=>{
         this._messagesService.addMessage('success','','Ürün Güncellendi')
         this._router.navigateByUrl('company/product')
@@ -60,6 +60,10 @@ export class ProductService {
       );
     }
     
+    getProductByDefaultFilter(currentPage:number,pageSize:number):Observable<DefaultFilter[]>{
+      return this._httpClient.get<ResponseModel<DefaultFilter[]>>(`https://localhost:8001/api/Product/GetProductsByDefaultFilter?CurrentPage=${currentPage}&PageSize=${pageSize}`)
+      .pipe(map(res=>res.data))
+    }
      
    
 }

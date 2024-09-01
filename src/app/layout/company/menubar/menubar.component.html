@@ -1,0 +1,41 @@
+<div class="flex justify-content-center align-items-center mb-3">
+    <div class="flex justify-content-between w-9 text-lg gap-3 p-3 align-items-center" style="border: 1px solid;">
+        <div>
+            logo
+        </div>
+        <div class="flex ml-8 gap-4">
+            <div *ngFor="let item of items" class="cursor-pointer dropdown">
+                <div class="hover:text-primary" routerLink="{{item.routerLink}}">
+                    <i class="{{item.icon}} mr-1"></i>
+                    <span>{{item.label}}</span>
+                </div>
+
+                <div class="hover:text-primary dropdown-content" *ngFor="let subitem of item.items">
+                    <div routerLink="{{subitem.routerLink}}">
+                        <i class="{{subitem.icon}} mr-1"></i>
+                        <span>{{subitem.label}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div (click)="logOut()" class="hover:text-primary cursor-pointer">
+                Çıkış Yap
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<style>
+    .dropdown{
+        display: inline-block;
+    }
+    .dropdown-content{
+        display: none;
+        position: absolute;
+    }
+    .dropdown:hover .dropdown-content{
+        display: block;
+    }
+</style> 

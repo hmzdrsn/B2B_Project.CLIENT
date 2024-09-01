@@ -5,8 +5,8 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
 import {  RouterModule} from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { GlobalmessageService } from '../../services/globalmessage.service';
+import { AuthService } from '../../../services/auth.service';
+import { GlobalmessageService } from '../../../services/globalmessage.service';
 @Component({
   selector: 'app-menubar',
   standalone: true,
@@ -16,7 +16,7 @@ import { GlobalmessageService } from '../../services/globalmessage.service';
   providers:[AuthService]
 })
 export class MenubarComponent {
-  items: MegaMenuItem[] | undefined;
+  items: any[] | undefined;
     messageService = inject(GlobalmessageService);
     constructor(private authService:AuthService) {
         
@@ -26,25 +26,33 @@ export class MenubarComponent {
           {
               label: 'Anasayfa',
               routerLink:"/company",
+              icon:'pi pi-home',
               root: true,
           },
           {
             label:'Ürünler',
             root:true,
             routerLink:"/company/product",
+            icon:'pi pi-list',
             items:[
-                [
-                    {
-                        items: [
-                            { label: 'Ürün Ekle', icon: 'pi pi-plus', subtext: '',routerLink:"/company/product/addproduct" },
-                        ]
-                    }
-                ]
+                {
+                  label:'Ürün Ekle',
+                  icon: 'pi pi-plus',
+                  subtext: '',
+                  routerLink:"/company/product/addproduct"
+                }
+                    // {
+                    //     items: [
+                    //         { label: 'Ürün Ekle', icon: 'pi pi-plus', subtext: '',routerLink:"/company/product/addproduct" },
+                    //     ]
+                    // }
+                
             ]
           },
           {
             label: 'Siparişler',
             routerLink:"/company/order",
+            icon:'pi pi-cart-arrow-down',
             root: true,
         },
       ];

@@ -1,35 +1,5 @@
-<div class="card">
+<div class="card flex justify-content-center">
     <p-toast />
-    <p-toolbar styleClass="mb-4 gap-2">
-        <ng-template pTemplate="left">
-            <p-button
-                severity="success" 
-                label="Ürün Ekle" 
-                icon="pi pi-plus" 
-                class="mr-2" 
-                [routerLink]="['/company/product/addproduct']" />
-            <p-button
-                severity="danger" 
-                label="Delete" 
-                icon="pi pi-trash" 
-                (onClick)="deleteselectedProducts()" 
-                [disabled]="!selectedProducts || !selectedProducts.length" />
-        </ng-template>
-
-        <ng-template pTemplate="right">
-            <p-fileUpload 
-                mode="basic" 
-                accept="image/*" 
-                [maxFileSize]="1000000" 
-                label="Import" 
-                chooseLabel="Import" 
-                class="mr-2 inline-block" />
-            <p-button
-                severity="help" 
-                label="Export" 
-                icon="pi pi-upload" />
-        </ng-template>
-    </p-toolbar>
 
     <p-table
         #dt
@@ -37,31 +7,51 @@
         [rows]="10"
         [paginator]="true"
         [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
-        [tableStyle]="{ 'min-width': '75rem' }"
+        [tableStyle]="{ 'min-width': '20rem' }"
         [(selection)]="selectedProducts"
         [rowHover]="true"
         dataKey="id"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        currentPageReportTemplate="{totalRecords} Kayıttan {first} ile {last} arası gösteriliyor."
         [showCurrentPageReport]="true"
+        class="w-9"
     >
         <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
-                <h5 class="m-0">Manage products</h5>
-                <span class="p-input-icon-left">
+            <div class="flex align-items-center justify-content-between"  style="height: 50px;">
+                <div>
+                    <button class="addproduct-button" routerLink="/company/product/addproduct">
+                        <i class="pi pi-plus"></i>
+                        Ürün Ekle
+                    </button>
+                    <style>
+                        .addproduct-button{
+                            background-color: rgb(92, 226, 92);
+                            border: none;
+                            border-radius: 5px;
+                            padding: 3px;
+                            font-size: 16px;
+                            color: white;
+                            cursor: pointer;
+                        }
+                        .addproduct-button:hover{
+                            background-color: rgb(35, 94, 35);
+                        }
+                    </style>
+                </div>
+                <div class="flex flex-row align-items-center">
                     <i class="pi pi-search"></i>
-                    <input 
+                    <input
+                        class="ml-1 h-2rem"
                         pInputText 
                         type="text" 
                         (input)="onFilter($event)" 
                         placeholder="Search..." />
-                </span>
-                
-                
+                </div>
             </div>
             <!-- $event.target.value -->
         </ng-template>
+        
         <ng-template pTemplate="header">
-            <tr>
+            <tr class="h-3rem">
                 <th style="width: 4rem">
                     <p-tableHeaderCheckbox />
                 </th>
@@ -81,8 +71,9 @@
                 <th></th>
             </tr>
         </ng-template>
+
         <ng-template pTemplate="body" let-product>
-            <tr>
+            <tr class="h-4rem">
                 <td>
                     <p-tableCheckbox [value]="product" />
                 </td>
@@ -99,7 +90,7 @@
                     {{ product.stock }}
                 </td>
                 
-                <td>
+                <td class="">
                     <p-button 
                         icon="pi pi-pencil" 
                         class="mr-2" 
@@ -118,7 +109,7 @@
         </ng-template>
         <ng-template pTemplate="summary">
             <div class="flex align-items-center justify-content-between">
-                In total there are {{ productList ? productList.length : 0 }} products.
+                Toplam {{ productList ? productList.length : 0 }} ürün.
             </div>
         </ng-template>
     </p-table>

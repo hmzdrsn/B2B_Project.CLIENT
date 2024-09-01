@@ -84,3 +84,10 @@ export class Image {
     }
   }
   
+  export class DefaultFilter{
+    productId:string;
+    productUrl:string;
+    productName:string;
+    productDescription:string;
+    productPrice:number;
+  }

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
@@ -13,6 +13,9 @@ import { OrderstatusService } from '../../../../services/orderstatus.service';
 import { DropdownModule } from 'primeng/dropdown';
 import { Status } from '../../../../services/models/OrderStatusResponse';
 import { GlobalmessageService } from '../../../../services/globalmessage.service';
+import { registerLocaleData } from '@angular/common';
+import localeTr from '@angular/common/locales/tr';
+
 @Component({
   selector: 'app-order',
   standalone: true,
@@ -34,18 +37,10 @@ export class OrderComponent implements OnInit {
   updateOrderDetail : UpdateOrderDetails[];
   
 
-  constructor(){}
+  constructor(){
+    registerLocaleData(localeTr);
+  }
   ngOnInit(): void {
-    //instance from group
-    // this.updateForm =this.fb.group({
-    //   address: '',
-    //   totalPrice: 0,
-    //   orderCode : '',
-    //   orderDate : null,
-    //   orderStatus : '',
-    //   orderDetails: this.fb.array([])
-    // })
-   
     this._orderService.getCompanyOrders().subscribe(res=>{
       this.orders = res.orders;
     })
@@ -55,24 +50,14 @@ export class OrderComponent implements OnInit {
     this.selectedOrderId = x;
     this._orderService.getOrderById(x).subscribe(res=>{
       this.updateOrderModel = res;
-      
-
       this._orderStatusService.getAll().subscribe(res=>{
         this.orderStatuses = res.status
-        console.log(this.orderStatuses);
         
       })
-
-
-
     this.showDialog();
 
     })
-
-    
-
-}
-
+  }
   onSubmit(){
     let statusModel: UpdateOrderStatus = new UpdateOrderStatus()
     statusModel.orderId = this.selectedOrderId
@@ -92,7 +77,6 @@ export class OrderComponent implements OnInit {
     this.visible = false;
   }
   selectStatus(){
-    console.log(this.selectedStatus);
     
   }
   getSeverity(event):any{

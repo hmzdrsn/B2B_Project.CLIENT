@@ -1,0 +1,36 @@
+<div class="flex flex-column gap-5">
+    5000 sonuç listeleniyor
+
+    <div class="flex justify-content-center">
+
+        <span style="width: 100%">
+            <p-dropdown [options]="categories" optionLabel="name" [style]="{'minWidth':'100%'}">
+            </p-dropdown>
+        </span>
+    </div>
+
+    <div class="flex flex-column">
+        <div class="mb-2">
+            <span>Marka</span>
+            <input style="width: 100%;" type="text" pInputText />
+        </div>
+
+        <div class="flex flex-column gap-1">
+            <div>
+                <p-checkbox [binary]="true" inputId="binary" />
+                <span>Nike</span>
+            </div>
+
+            <div>
+                <p-checkbox [binary]="true" inputId="binary" />
+                <span>Polo</span>
+            </div>
+
+            <div>
+                <p-checkbox [binary]="true" inputId="binary" />
+                <span>Mavi</span>
+            </div>
+        </div>
+    </div>
+
+</div>
