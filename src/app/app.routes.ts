@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { ErrorComponent } from './pages/error/components/error/error.component';
 import { CompanyGuard } from './guards/company.guard';
+import { MemberGuard } from './guards/member.guard';
 
 export const routes: Routes = [
     {   path:'',//guest
@@ -13,7 +14,8 @@ export const routes: Routes = [
     },
     {
         path: 'member',
-        loadChildren :()=> import('../app/pages/member/member.route').then(c=>c.memberRoutes)
+        loadChildren :()=> import('../app/pages/member/member.route').then(c=>c.memberRoutes),
+        canActivate:[MemberGuard]
     },
     {
         path:'**',

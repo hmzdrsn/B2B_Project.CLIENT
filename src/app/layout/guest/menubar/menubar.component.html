@@ -8,11 +8,20 @@
         </div>
         <div class="flex flex-row gap-2">
             <div *ngFor="let item of items" class="flex flex-column test">
-                <a class="mr-3 align-items-center cursor-pointer ">
+                <a class="mr-3 align-items-center cursor-pointer">
                     <div class="dropdown">
-                        <div class="hover:text-primary" routerLink="{{item.routerLink}}">
+                        <div *ngIf="!item.basket" class="hover:text-primary" routerLink="{{item.routerLink}}">
                             <span [class]="item.icon"></span>
                             <span class="ml-2">{{ item.label }}</span>
+                        </div>
+                        <div *ngIf="item.basket" class="basket-container">
+                            <div class="basket-wrapper">
+                                <div class="hover:text-primary">
+                                    <span [class]="item.icon"></span>
+                                    <span class="ml-2">{{ item.label }}</span>
+                                </div>
+                                <app-basket class="basket"></app-basket>
+                            </div>
                         </div>
                         <div class="dropdown-content">
                             <div *ngFor="let subitem of item.items" class="hover:text-primary">
@@ -25,19 +34,35 @@
         </div>
     </div>
 </div>
-
 <style>
-    .bar{
-        height: 50px;
-    }
-    .dropdown{
+    .basket-container {
+        position: relative;
         display: inline-block;
     }
-    .dropdown-content{
+    .basket-wrapper {
+        display: flex;
+        align-items: center;
+    }
+    .basket {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+    }
+    .basket-container:hover .basket {
+        display: block;
+    }
+    .bar {
+        height: 50px;
+    }
+    .dropdown {
+        display: inline-block;
+    }
+    .dropdown-content {
         display: none;
         position: absolute;
     }
-    .dropdown:hover .dropdown-content{
+    .dropdown:hover .dropdown-content {
         display: block;
     }
 </style>

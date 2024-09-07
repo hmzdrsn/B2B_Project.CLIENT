@@ -11,7 +11,8 @@ import { ContentComponent } from '../../../layout/guest/content/content.componen
   template:`
   <app-menubar></app-menubar>
   <app-categorybar></app-categorybar>
-  <app-content></app-content>
+  <!-- <app-content></app-content> -->
+   <router-outlet></router-outlet>
   `
 })
 export class HomeComponent {

@@ -3,11 +3,12 @@ import { MenubarModule } from 'primeng/menubar';
 import { BadgeModule } from 'primeng/badge';
 import { AvatarModule } from 'primeng/avatar';
 import { InputTextModule } from 'primeng/inputtext';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { RippleModule } from 'primeng/ripple';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { BasketComponent } from '../basket/basket.component';
 
 @Component({
   selector: 'app-menubar',
@@ -19,7 +20,9 @@ import { JwtHelperService } from '@auth0/angular-jwt';
     InputTextModule, 
     RippleModule, 
     CommonModule,
-    RouterModule
+    RouterModule,
+    BasketComponent,
+    NgIf
   ],
   templateUrl: './menubar.component.html',
   styleUrls: ['./menubar.component.scss']
@@ -59,7 +62,7 @@ export class MenubarComponent implements OnInit {
         },
         {
           label: 'Sepetim',
-          icon: 'pi pi-shopping-cart',
+          icon: 'pi pi-shopping-cart'
         },
         {
           label: 'Şirket Paneli',
@@ -81,6 +84,7 @@ export class MenubarComponent implements OnInit {
         {
           label: 'Sepetim',
           icon: 'pi pi-shopping-cart',
+          basket:true
         }
       ];
     } else if (isMember) {
