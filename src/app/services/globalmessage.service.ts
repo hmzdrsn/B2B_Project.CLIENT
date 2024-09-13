@@ -10,6 +10,6 @@ export class GlobalmessageService {
   }
 
   addMessage(severity: string, summary: string, detail: string) {
-    this._messageService.add({ severity, summary, detail, sticky:false, life:2000 });
+    this._messageService.add({ severity, summary, detail, sticky:false, life:500 });
   }
 }

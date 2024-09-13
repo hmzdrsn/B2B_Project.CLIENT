@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { map, Observable, of } from "rxjs";
-import { DefaultFilter, Product, ProductResponse, ProductResponse2, UpdateProductModel } from "./models/ProductResponse";
+import { DefaultFilter, Product, ProductCountModel, ProductResponse, ProductResponse2, UpdateProductModel } from "./models/ProductResponse";
 import { ResponseModel } from "./models/Response";
 import { GlobalmessageService } from "./globalmessage.service";
 import { Router } from "@angular/router";
@@ -64,6 +64,10 @@ export class ProductService {
       return this._httpClient.get<ResponseModel<DefaultFilter[]>>(`https://localhost:8001/api/Product/GetProductsByDefaultFilter?CurrentPage=${currentPage}&PageSize=${pageSize}`)
       .pipe(map(res=>res.data))
     }
-     
-   
+    
+    getProductsCount():Observable<number>{
+      const productsCount :number = 0;
+      return this._httpClient.get<ResponseModel<ProductCountModel>>("https://localhost:8001/api/Product/GetProductsCount")
+      .pipe(map(res=>res.data.productsCount))
+    }
 }

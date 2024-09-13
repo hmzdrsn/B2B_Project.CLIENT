@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ErrorComponent } from './pages/error/components/error/error.component';
+import { ErrorComponent } from './pages/guest/error/error.component';
 import { CompanyGuard } from './guards/company.guard';
 import { MemberGuard } from './guards/member.guard';
 

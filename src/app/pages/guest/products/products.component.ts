@@ -5,23 +5,27 @@ import { ProductService } from '../../../services/product.service';
 import { NgFor } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
+import { Router, RouterModule } from '@angular/router';
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [PaginatorModule, NgFor,CardModule,ButtonModule],
+  imports: [PaginatorModule, NgFor,CardModule,ButtonModule,RouterModule],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
   _productService = inject(ProductService);
-
-  totalItems: number = 100;
+  _router = inject(Router);
+  totalItems: number;
   pageSize: number = 10;
   currentPage: number = 1;
 
   items: DefaultFilter[];
 
   ngOnInit(): void {
+     this._productService.getProductsCount().subscribe(res=>{
+       this.totalItems = res
+     })
     this.loadProducts();
   }
 
@@ -55,5 +59,9 @@ export class ProductsComponent implements OnInit {
   onPageChange(event) {
     this.currentPage = event.page + 1;
     this.loadProducts();
+  }
+
+  routeProductDetail(productId:string){
+    this._router.navigate(['/product-detail'],{queryParams:{productId:productId}})
   }
 }

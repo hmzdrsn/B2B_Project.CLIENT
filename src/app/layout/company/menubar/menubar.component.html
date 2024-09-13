@@ -1,6 +1,6 @@
 <div class="flex justify-content-center align-items-center mb-3">
     <div class="flex justify-content-between w-9 text-lg gap-3 p-3 align-items-center" style="border: 1px solid;">
-        <div>
+        <div routerLink="/" class="cursor-pointer">
             logo
         </div>
         <div class="flex ml-8 gap-4">
@@ -9,7 +9,7 @@
                     <i class="{{item.icon}} mr-1"></i>
                     <span>{{item.label}}</span>
                 </div>
-
+                
                 <div class="hover:text-primary dropdown-content" *ngFor="let subitem of item.items">
                     <div routerLink="{{subitem.routerLink}}">
                         <i class="{{subitem.icon}} mr-1"></i>

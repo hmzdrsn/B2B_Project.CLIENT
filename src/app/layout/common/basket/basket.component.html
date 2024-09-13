@@ -1,0 +1,109 @@
+<div class="flex flex-column basket">
+    <div class="basket-items" *ngFor="let item of basketItems">
+        <img [src]="item.productImageUrl" alt="{{item.productName}}" class="basket-image">
+        <div class="basket-details">
+            <div class="product-name">{{item.productName}}</div>
+            <div class="product-price">{{item.price}} TL</div>
+            <div class="product-quantity">Adet: {{item.quantity}}</div>
+        </div>
+        <button class="remove-button" (click)="removeFromBasket(item.productId)">
+            <i class="pi pi-trash"></i>
+        </button>
+    </div>
+    <hr>
+    <div class="total-price">
+        Toplam Tutar: {{totalPrice}} TL
+    </div>
+    <div class="flex justify-content-between mt-2">
+        <button class="basket-detail" routerLink="/basket-detail">Sepete Git</button>
+        <button class="create-order" routerLink="/create-order">Siparişi Tamamla</button>
+    </div>
+</div>
+
+<style>
+    .basket {
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid #dcdcdf;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+        width: 300px;
+    }
+
+    .basket-items {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .basket-image {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        border: 1px solid #e5e5e5;
+        border-radius: 5px;
+        margin-right: 1rem;
+    }
+
+    .basket-details {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-name, .product-price, .product-quantity {
+        font-size: 14px;
+        margin-bottom: 0.5rem;
+    }
+    .create-order{
+        border: none;
+        background-color: rgb(150, 72, 0);
+        color: white;
+        padding: 0.5rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .create-order:hover{
+        background-color: rgb(230, 111, 0);
+    }
+    .basket-detail{
+        border: none;
+        background-color: gray;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    
+    }
+    .basket-detail:hover{
+        background-color: rgb(194, 192, 192);
+    }
+    .remove-button {
+        border: none;
+        background-color: red;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .remove-button:hover {
+        background-color: #833a3a;
+    }
+
+    .total-price {
+        font-weight: bold;
+        font-size: 16px;
+        text-align: right;
+    }
+
+    hr {
+        margin: 1rem 0;
+        border: none;
+        border-top: 1px solid #e5e5e5;
+    }
+</style>

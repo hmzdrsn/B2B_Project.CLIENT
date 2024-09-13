@@ -53,6 +53,7 @@ export class MenubarComponent {
             label: 'Siparişler',
             routerLink:"/company/order",
             icon:'pi pi-cart-arrow-down',
+            basket:true,
             root: true,
         },
       ];

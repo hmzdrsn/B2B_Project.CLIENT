@@ -8,7 +8,7 @@ import { RippleModule } from 'primeng/ripple';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { BasketComponent } from '../basket/basket.component';
+import { BasketComponent } from '../../common/basket/basket.component';
 
 @Component({
   selector: 'app-menubar',
@@ -47,7 +47,6 @@ export class MenubarComponent implements OnInit {
     const isMember = this.roles.some(x => x === "Member");
     const isGuest = this.roles.length < 1;
 
-    console.log(isMember, isCompany, isGuest);
 
     if (isCompany) {
       this.items = [
@@ -62,7 +61,8 @@ export class MenubarComponent implements OnInit {
         },
         {
           label: 'Sepetim',
-          icon: 'pi pi-shopping-cart'
+          icon: 'pi pi-shopping-cart',
+          basket:true
         },
         {
           label: 'Şirket Paneli',
@@ -101,8 +101,18 @@ export class MenubarComponent implements OnInit {
         {
           label: 'Sepetim',
           icon: 'pi pi-shopping-cart',
+          basket:true
         }
       ];
     }
   }
+  //basket integration
+  basketState : boolean = false;
+  openBasket(){
+    this.basketState = true;
+  }
+  closeBasket(){
+    this.basketState = false;
+  }
+
 }

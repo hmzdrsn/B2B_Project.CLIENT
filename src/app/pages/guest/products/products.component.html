@@ -1,55 +1,55 @@
-<div class="flex flex-wrap ml-3 gap-3">
-    <div class="card hover:text-primary overflow-hidden white-space-nowrap text-overflow-ellipsis cursor-pointer" *ngFor="let item of items">
+<div class="flex flex-wrap ml-3 gap-6">
+    <div class="card hover:text-primary transition-shadow duration-200 ease-in-out transform hover:scale-105 cursor-pointer" *ngFor="let item of items" (click)="routeProductDetail(item.productId)">
         <div class="card-image">
-            <img src="{{item.productUrl}}">
+            <img src="{{item.productUrl}}" alt="Product Image">
         </div>
-        <span class="overflow-hidden white-space-nowrap text-overflow-ellipsis text-xl">{{item.productName}}</span>
-        <p class="overflow-hidden white-space-nowrap text-overflow-ellipsis text-sm">{{item.productDescription}} </p>
-        <span class="text-primary">{{item.productPrice}} TL</span>
-        <!-- <div>
-            <img
-                src="{{item.productUrl}}">
+        <div class="card-content p-2">
+            <span class="font-bold block overflow-hidden white-space-nowrap text-overflow-ellipsis text-lg">{{item.productName}}</span>
+            <p class="text-gray-600 overflow-hidden white-space-nowrap text-overflow-ellipsis text-sm">{{item.productDescription}}</p>
+            <span class="text-primary font-semibold mt-1 block">{{item.productPrice}} TL</span>
         </div>
-
-        <div class="flex flex-column">
-            <div class="overflow-hidden white-space-nowrap text-overflow-ellipsis">
-                {{item.productName}}
-            </div>
-            <div class="text-overflowhidden text-xs">
-                {{item.productDescription}}
-            </div>
-            <div class="overflow-hidden">
-                {{item.productPrice}}
-            </div>
-        </div> -->
     </div>
 </div>
 
 <p-paginator
-[totalRecords]="totalItems"
-[rows]="pageSize"
-(onPageChange)="onPageChange($event)"
+    [totalRecords]="totalItems"
+    [rows]="pageSize"
+    (onPageChange)="onPageChange($event)"
+    class="mt-4"
 ></p-paginator>
 
-
 <style>
-    .card{
+    .card {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         border: 1px solid rgb(204, 204, 204);
-        border-radius: 5px;
-        height: 240px;
-        width: 150px;
+        border-radius: 10px;
+        height: 260px;
+        width: 180px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
     }
-   .card-image{
-    height: 60%;
-    border-radius: 5px;
-   }
-   .card-image img{
-    border-bottom: 1px solid rgb(216, 192, 148);
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
-   }
+    
+    .card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    
+    .card-image {
+        height: 60%;
+        border-radius: 10px 10px 0 0;
+        overflow: hidden;
+    }
+    
+    .card-image img {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+        border-bottom: 1px solid rgb(216, 192, 148);
+    }
+    
+    .card-content {
+        padding: 10px;
+    }
 </style>

@@ -13,7 +13,6 @@ export class CompanyGuard implements CanActivate {
     await this.authService.authControl();
 
     this.isCompany = this.authService.roles.some(x=>x=="Company");
-    console.log(this.isCompany);
     if (!this.authService.isAuthenticated || !this.isCompany) {
       this.router.navigate(['/login']);
       return false;

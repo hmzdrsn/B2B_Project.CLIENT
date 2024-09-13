@@ -1,0 +1,203 @@
+<div class="flex justify-content-center">
+    <div class="card flex justify-content-center w-9 mt-4">
+        <p-stepper
+        [linear]="true"
+        >
+            <p-stepperPanel header="Sepet">
+                <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+                    <div class="flex flex-column">
+                        <div class="flex flex-column h-12rem">
+                            <div class="flex font-medium mt-3">
+                                <div class="flex flex-column gap-2 w-full">
+                                    <div class="flex flex-column gap-3 basketItem" *ngFor="let item of basketItems">
+                                        <div class="flex align-items-center gap-3">
+                                            <img src="{{item.productImageUrl}}">
+                                            <div class="flex flex-column">
+                                                <span>{{item.productName}} </span>
+                                                <p class="cut-text">Lorem, ipsum dolor sit amet consectetur adipisicing
+                                                    elit.</p>
+                                            </div>
+                                            <div class="s3">
+                                                <div class="s1" (click)="reduceQuantity(item.productId)">-</div>
+                                                <span class="text-lg">{{item.quantity}}</span>
+                                                <div class="s2" (click)="increaseQuantity(item.productId)">+</div>
+                                            </div>
+                                            <span>{{item.price}} TL</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-content-end">
+                                        <div class="flex align-items-end flex-column gap-2">
+                                            <span style="font-size: 20px;">Toplam Tutar: {{totalPrice}} TL</span>
+                                            <p-button label="Sepeti Onayla" icon="pi pi-angle-right" iconPos="right"
+                                                (onClick)="nextCallback.emit()" styleClass="p-2 text-lg" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-stepperPanel>
+
+            <p-stepperPanel header="Adres Bilgileri">
+                <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
+                    let-index="index">
+                    <div class="flex flex-column h-12rem">
+                        <div class="flex flex-column font-medium mt-3">
+                            <span class="text-xl font-bold mb-2">Teslimat Adresi</span>
+                            <div class="flex flex-wrap gap-3 mt-3">
+                                <!-- Yeni Adres Ekle -->
+                                <div
+                                    class="flex flex-column justify-content-center align-items-center h-8rem w-4 cursor-pointer newAd">
+                                    <i class="pi pi-plus text-primary"></i>
+                                    <span class="mt-1 text-md">Yeni Adres Ekle</span>
+                                </div>
+
+                                <!-- Mevcut Adres -->
+                                <div class="flex flex-column h-8rem w-6 oldAd cursor-pointer p-3 border-round shadow-1">
+                                    <div class="flex justify-content-between mb-2">
+                                        <div>
+                                            <input type="radio" name="a" id="">
+                                            <span class="ml-2 font-semibold">Ev Adresim</span>
+                                        </div>
+                                        <span class="text-primary cursor-pointer">Düzenle</span>
+                                    </div>
+                                    <div class="flex flex-column bg-surface-50 border-round p-2">
+                                        <div class="flex justify-content-between mb-1">
+                                            <span><i class="pi pi-user text-primary"></i> Hamza Dursun</span>
+                                            <span><i class="pi pi-mobile"></i> 0535 567 6464</span>
+                                        </div>
+                                        <span class="text-sm text-secondary">Adres Başlığı</span>
+                                        <span class="text-sm text-secondary">Adres Detayları</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex pt-4 justify-content-between">
+                        <p-button styleClass="p-2 text-lg" label="Geri" icon="pi pi-angle-left"
+                            (onClick)="prevCallback.emit()" />
+                        <p-button styleClass="p-2 text-lg" label="İleri" icon="pi pi-angle-right" iconPos="right"
+                            (onClick)="nextCallback.emit()" />
+                    </div>
+                </ng-template>
+            </p-stepperPanel>
+
+            <p-stepperPanel header="Ödemeyi Tamamla">
+                <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
+                    <div class="flex flex-column h-12rem">
+                        <div class="flex mt-3 gap-5">
+                            <div class="flex flex-column gap-3 mt-3">
+                                <div class="flex flex-column gap-2">
+                                    <span>Ad Soyad</span>
+                                    <input type="text" pInputText class="p-1" />
+                                </div>
+
+                                <div class="flex flex-column gap-2">
+                                    <span>Kredi Kartı Numarası</span>
+                                    <p-inputMask mask="9999-9999-9999-9999" placeholder="____-____-____-____"
+                                        styleClass="p-1" />
+                                </div>
+                            </div>
+
+                            <div class="flex flex-column gap-3 mt-3">
+                                <div class="flex flex-column gap-2">
+                                    <span>Son Kullanma Tarihi:</span>
+                                    <p-inputMask mask="99/99" placeholder="__/__" styleClass="p-1" />
+                                </div>
+                                <div class="flex flex-column gap-2">
+                                    <span>CVV:</span>
+                                    <p-inputMask mask="999" styleClass="p-1" placeholder="___" />
+                                </div>
+                            </div>
+
+                            <div class="flex flex-column gap-3 mt-3">
+                                <span>Sipariş Özeti</span>
+                                <div class="flex">
+                                    <span class="font-bold">Toplam Tutar : 1500 TL</span>
+                                </div>
+                                <p-button label="Ödeme Yap"
+                                    styleClass="p-2 text-lg bg-green-400 hover:bg-green-700 border-transparent" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex pt-4 justify-content-start">
+                        <p-button styleClass="p-2 text-lg" label="Geri" icon="pi pi-angle-left"
+                            (onClick)="prevCallback.emit()" />
+                    </div>
+                </ng-template>
+            </p-stepperPanel>
+        </p-stepper>
+    </div>
+</div>
+
+<style>
+    .p-stepper {
+        flex-basis: 50rem;
+    }
+
+    .newAd:hover,
+    .oldAd:hover {
+        border: 1px solid orange;
+        border-radius: 8px;
+        transition: border 0.3s;
+    }
+
+    .oldAd {
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+    }
+
+
+    .basketItem {
+        border: 1px solid rgb(182, 180, 180);
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .basketItem img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        border: 1px solid rgb(182, 180, 180);
+        border-radius: 5px;
+    }
+
+    .s1,
+    .s2 {
+        display: flex;
+        height: 30px;
+        width: 30px;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        border: 1px solid rgb(182, 180, 180);
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .s3 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 80px;
+    }
+
+    .s1:hover {
+        background-color: red;
+        color: white;
+    }
+
+    .s2:hover {
+        background-color: green;
+        color: white;
+    }
+
+    .cut-text {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 160px;
+        height: 1.2em;
+        white-space: nowrap;
+    }
+</style>

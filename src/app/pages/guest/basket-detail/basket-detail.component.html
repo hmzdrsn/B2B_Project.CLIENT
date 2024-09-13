@@ -1,0 +1,71 @@
+<div class="flex justify-content-center mt-5">
+    <div class="flex flex-column w-9">
+        <div class="flex flex-column gap-3 basketItem" *ngFor="let item of basketItems">
+            <div class="flex align-items-center gap-3">
+                <img src="{{item.productImageUrl}}">
+                <div class="flex flex-column">
+                    <span>{{item.productName}} </span>
+                    <p class="cut-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+                </div>
+                <div class="s3">
+                    <div class="s1" (click)="reduceQuantity(item.productId)">-</div>
+                    <span>{{item.quantity}}</span>
+                    <div class="s2" (click)="increaseQuantity(item.productId)">+</div>
+                </div>
+                <span>{{item.price}} TL</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .basketItem {
+        border: 1px solid rgb(182, 180, 180);
+        border-radius: 5px;
+        padding: 10px;
+        width: 70%;
+    }
+
+    .basketItem img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        border: 1px solid rgb(182, 180, 180);
+        border-radius: 5px;
+    }
+
+    .s1, .s2 {
+        display: flex;
+        height: 30px;
+        width: 30px;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        border: 1px solid rgb(182, 180, 180);
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .s3 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 80px;
+    }
+
+    .s1:hover {
+        background-color: red;
+    }
+
+    .s2:hover {
+        background-color: green;
+    }
+
+    .cut-text {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 160px;
+        height: 1.2em;
+        white-space: nowrap;
+    }
+</style>

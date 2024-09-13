@@ -91,3 +91,7 @@ export class Image {
     productDescription:string;
     productPrice:number;
   }
+
+  export class ProductCountModel{
+      productsCount: number;
+  }

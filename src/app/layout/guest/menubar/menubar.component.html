@@ -1,6 +1,6 @@
 <div class="flex justify-content-center bar align-items-center">
     <div class="flex w-9 justify-content-between text-lg">
-        <div>
+        <div routerLink="/" class="cursor-pointer">
             logo
         </div>
         <div>
@@ -15,12 +15,13 @@
                             <span class="ml-2">{{ item.label }}</span>
                         </div>
                         <div *ngIf="item.basket" class="basket-container">
-                            <div class="basket-wrapper">
+                            <div class="basket-wrapper" (mouseover)="openBasket()" (mouseout)="closeBasket()">
                                 <div class="hover:text-primary">
                                     <span [class]="item.icon"></span>
                                     <span class="ml-2">{{ item.label }}</span>
                                 </div>
-                                <app-basket class="basket"></app-basket>
+                                <!-- X -->
+                                 <app-basket *ngIf="basketState"></app-basket>
                             </div>
                         </div>
                         <div class="dropdown-content">
@@ -38,16 +39,6 @@
     .basket-container {
         position: relative;
         display: inline-block;
-    }
-    .basket-wrapper {
-        display: flex;
-        align-items: center;
-    }
-    .basket {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
     }
     .basket-container:hover .basket {
         display: block;
