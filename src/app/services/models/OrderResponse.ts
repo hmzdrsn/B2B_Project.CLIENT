@@ -34,3 +34,11 @@ export class UpdateOrderStatus{
 // public string Name { get; set; }
 // public decimal TotalPrice { get; set; }
 // public DateOnly OrderDate{ get; set; }
+
+export class UserOrders{
+    appUserId:string;
+    totalPrice:number;
+    orderCode:string;
+    orderDate:Date;
+    orderStatus:string;
+}

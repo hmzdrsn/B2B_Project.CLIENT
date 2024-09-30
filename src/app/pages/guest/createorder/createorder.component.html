@@ -29,7 +29,7 @@
                                         <div class="flex align-items-end flex-column gap-2">
                                             <span style="font-size: 20px;">Toplam Tutar: {{totalPrice}} TL</span>
                                             <p-button label="Sepeti Onayla" icon="pi pi-angle-right" iconPos="right"
-                                                (onClick)="nextCallback.emit()" styleClass="p-2 text-lg" />
+                                                (onClick)="nextCallback.emit()" (onClick)="getAddresses()" styleClass="p-2 text-lg" />
                                         </div>
                                     </div>
                                 </div>
@@ -54,31 +54,32 @@
                                 </div>
 
                                 <!-- Mevcut Adres -->
-                                <div class="flex flex-column h-8rem w-6 oldAd cursor-pointer p-3 border-round shadow-1">
+                                <div class="flex flex-column h-8rem w-6 oldAd cursor-pointer p-3 border-round shadow-1"
+                                *ngFor="let item of address">
                                     <div class="flex justify-content-between mb-2">
                                         <div>
-                                            <input type="radio" name="a" id="">
-                                            <span class="ml-2 font-semibold">Ev Adresim</span>
+                                            <input type="radio" name="a" id="{{item.addressId}}" [checked]="item.isActive" (change)="setAddress($event)">
+                                            <span class="ml-2 font-semibold">{{item.title}} </span>
                                         </div>
                                         <span class="text-primary cursor-pointer">Düzenle</span>
                                     </div>
                                     <div class="flex flex-column bg-surface-50 border-round p-2">
                                         <div class="flex justify-content-between mb-1">
-                                            <span><i class="pi pi-user text-primary"></i> Hamza Dursun</span>
-                                            <span><i class="pi pi-mobile"></i> 0535 567 6464</span>
+                                            <span><i class="pi pi-user text-primary"></i>{{item.fullName}} </span>
+                                            <span><i class="pi pi-mobile"></i>{{item.phone}} </span>
                                         </div>
-                                        <span class="text-sm text-secondary">Adres Başlığı</span>
-                                        <span class="text-sm text-secondary">Adres Detayları</span>
+                                        <span class="text-sm text-secondary">{{item.city}}</span>
+                                        <span class="text-sm text-secondary">{{item.address1}} </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="flex pt-4 justify-content-between">
-                        <p-button styleClass="p-2 text-lg" label="Geri" icon="pi pi-angle-left"
-                            (onClick)="prevCallback.emit()" />
-                        <p-button styleClass="p-2 text-lg" label="İleri" icon="pi pi-angle-right" iconPos="right"
-                            (onClick)="nextCallback.emit()" />
+                        <div class="flex pt-4 justify-content-between">
+                            <p-button styleClass="p-2 text-lg" label="Geri" icon="pi pi-angle-left"
+                                (onClick)="prevCallback.emit()" />
+                            <p-button styleClass="p-2 text-lg" label="İleri" icon="pi pi-angle-right" iconPos="right"
+                                (onClick)="nextCallback.emit()" />
+                        </div>
                     </div>
                 </ng-template>
             </p-stepperPanel>
@@ -114,9 +115,9 @@
                             <div class="flex flex-column gap-3 mt-3">
                                 <span>Sipariş Özeti</span>
                                 <div class="flex">
-                                    <span class="font-bold">Toplam Tutar : 1500 TL</span>
+                                    <span class="font-bold">Toplam Tutar : {{totalPrice}} TL</span>
                                 </div>
-                                <p-button label="Ödeme Yap"
+                                <p-button label="Ödeme Yap" (click) ="createOrder()"
                                     styleClass="p-2 text-lg bg-green-400 hover:bg-green-700 border-transparent" />
                             </div>
                         </div>

@@ -1,0 +1,105 @@
+<div class="flex justify-content-center">
+    <div class="flex w-9">
+        <div class="flex flex-column gap-3 user-card mr-2">
+            <div class="flex justify-content-between align-items-center p-2 user" *ngFor="let item of UserList"
+                (click)="selectUser(item.userId)" class="{{item.userId == selectedUser.userId ? 'bg-indigo-800':'bg-indigo-200'}}">
+                <img
+                    src="https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png">
+                <div class="flex flex-column">
+                    <span class="font-bold text-white text-xl">{{item.fullName}} </span>
+                    <span class="flex align-items-center gap-1">
+                        <i class="pi pi-circle-on {{item.isOnline ? 'text-green-500' : 'text-red-500'}}"></i>
+                        <span class="text-sm text-white">{{item.isOnline ? 'Çevrimiçi' : 'Çevrimdışı'}} </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- mesaj -->
+        <div class="chat flex flex-column p-3 border-round">
+            <div class="flex justify-content-center align-items-center p-2 bg-indigo-800 text-gray-100 gap-2 border-round mb-2">
+                <i class="pi pi-circle-on {{selectedUser.isOnline ? 'text-green-500' : 'text-red-500'}}"></i>
+                <span>{{selectedUser.fullName}}</span><br> 
+            </div>
+            <div class="flex flex-column flex-grow-1 overflow-auto mb-2">
+                <div class="message-container" *ngFor="let item of Messages"> <!--  -->
+                    <div class="message" class="{{item.receiverId==selectedUser.userId ? 'sent' : 'received'}}">
+                        {{item.content}}
+                    </div>
+                </div>
+                <!-- Daha fazla mesaj burada görünecek -->
+            </div>
+            <div class="flex align-items-center">
+                <i
+                    class="pi pi-paperclip p-2 border-2 border-round border-primary hover:text-primary cursor-pointer mr-2"></i>
+                <input #messageInput type="text" class="p-inputtext p-component flex-grow-1 mr-2 p-2"
+                    placeholder="Mesajınızı yazın..." />
+                <button (click)="sendMessage(messageInput.value)"
+                    class="p-button p-component p-button-primary p-2">Gönder</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .user-card {
+        width: 25%;
+    }
+
+    .user {
+        border: 1px solid rgb(185, 185, 185);
+        width: 100%;
+        border-radius: 15px;
+    }
+
+    .user img {
+        border-radius: 50px;
+        width: 30%;
+        object-fit: contain;
+    }
+
+    .user:hover {
+        cursor: pointer;
+        border: 1px solid rgb(102, 102, 102);
+        background-color: rgb(224, 224, 224);
+        ;
+    }
+
+    .chat {
+        border: 1px solid rgb(133, 133, 133);
+        width: 70%;
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .flex-grow-1 {
+        flex-grow: 1;
+    }
+
+    .overflow-auto {
+        overflow-y: auto;
+    }
+
+    .message {
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .message.sent {
+        background-color: #e1ffc7;
+        align-self: flex-end;
+    }
+
+    .message.received {
+        background-color: #f1f1f1;
+        align-self: flex-start;
+    }
+
+    .message-container {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
+</style>

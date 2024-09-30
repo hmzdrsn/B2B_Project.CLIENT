@@ -35,11 +35,13 @@ export class MenubarComponent {
       },
       {
         label: 'Siparişlerim',
-        icon: 'pi pi-shopping-bag'
+        icon: 'pi pi-shopping-bag',
+        routerLink:'/member/orders'
       },
       {
         label: 'Mesajlar',
         icon: 'pi pi-envelope',
+        routerLink:'/member/messages'
       },
       {
         label: 'Çıkış Yap',

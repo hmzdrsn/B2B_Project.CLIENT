@@ -1,26 +1,28 @@
 <div class="flex justify-content-center">
     <div class="flex w-9">
         <div class="flex flex-column w-full mt-5 gap-2">
-            <h2 class="flex justify-content-center">Son Siparişler</h2>
-            <div class="flex justify-content-between align-items-center gap-3 border" *ngFor="let item of orders">
+            <h2 class="flex justify-content-center">Siparişlerim</h2>
+            <div class="flex justify-content-between align-items-center gap-3 border" >
                 <div class="flex flex-column gap-1">
                     <span class="font-bold">Sipariş Tarihi</span>
-                    <span class="order-date">{{item.orderDate | date:'d.mm.yyyy hh:mm'}}</span>
+                    <span class="order-date">2024-09-18</span>
                 </div>
                 <div class="flex flex-column gap-1">
                     <span class="font-bold">Sipariş Kodu</span>
-                    <span class="order-code">{{item.orderCode}}</span>
+                    <span class="order-code">0000000002</span>
                 </div>
                 <div class="flex flex-column gap-1">
                     <span class="font-bold">Sipariş Durumu</span>
-                    <span class="order-status">{{item.orderStatus}} </span>
+                    <span class="order-status">Sipariş Alındı</span>
                 </div>
                 <div class="flex flex-column gap-1">
                     <span class="font-bold">Toplam Tutar</span>
-                    <span class="price">{{item.totalPrice}}  TL</span>
+                    <span class="price">320.99 TL</span>
                 </div>
                 <p-button styleClass="p-2">Sipariş Detayları</p-button>
             </div>
+
+            
         </div>
     </div>
 </div>
