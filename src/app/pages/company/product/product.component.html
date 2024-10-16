@@ -98,6 +98,13 @@
                         [outlined]="true" 
                         severity="success" 
                         (onClick)="editProduct(product)" />
+                        <p-button 
+                        icon="pi pi-percentage" 
+                        class="mr-2" 
+                        [rounded]="true" 
+                        [outlined]="true" 
+                        severity="primary" 
+                        (onClick)="openAssignDialog(product.productId)" />
                     <p-button 
                         icon="pi pi-trash" 
                         severity="danger" 
@@ -179,6 +186,31 @@
                     (onClick)="saveproduct()" />
             </ng-template>
     </p-dialog>
+
+
+    <p-dialog 
+  header="Ürüne İndirim Ata" 
+  [(visible)]="displayAssignDialog" 
+  [modal]="true" 
+  [closable]="true" 
+  [responsive]="true" 
+  [style]="{width: '25vw', height: 'auto', 'max-height': '80vh'}" 
+  [contentStyle]="{'overflow': 'auto'}">
+    <form [formGroup]="assignForm" (ngSubmit)="onAssignDiscount()"
+        class="flex p-fluid p-5 gap-4">
+        
+        <p-dropdown 
+            formControlName="selectedDiscount" 
+            [options]="discounts" 
+            optionLabel="discountCode"
+            placeholder="İndirim Seçiniz" 
+            class="w-full"
+            [appendTo]="'body'">
+        </p-dropdown>
+
+        <button pButton type="submit" label="İndirimi Ata" class="p-button-success p-2"></button>
+    </form>
+</p-dialog>
 
     <p-confirmDialog [style]="{ width: '450px' }" />
 </div>

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
@@ -52,7 +52,7 @@ export class AddproductComponent implements OnInit  {
       }
     );
     this.productForm = this.fb.group({
-      name: [''],
+      name: ['',Validators.required,Validators.minLength(3)],
       description: [''],
       price: [null],
       productCode: [''],
@@ -61,8 +61,14 @@ export class AddproductComponent implements OnInit  {
       productImages: [null]
     });
   }
-
+  get name(){
+    return this.productForm.get("name");
+  }
  
+  get price(){
+    return this.productForm.get("price");
+  }
+
   onSelect(event: any) {
     // Seçilen dosyaları al ve sakla
     let file= event.files[0];

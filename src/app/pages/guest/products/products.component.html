@@ -1,12 +1,20 @@
-<div class="flex flex-wrap ml-3 gap-6">
-    <div class="card hover:text-primary transition-shadow duration-200 ease-in-out transform hover:scale-105 cursor-pointer" *ngFor="let item of items" (click)="routeProductDetail(item.productId)">
+<div class="flex flex-wrap justify-center ml-3 gap-4">
+    <div 
+        class="card hover:shadow-md transition-all duration-200 ease-in-out transform hover:scale-103 cursor-pointer"
+        *ngFor="let item of items"
+        (click)="routeProductDetail(item.productId)"
+    >
         <div class="card-image">
             <img src="{{item.productUrl}}" alt="Product Image">
         </div>
         <div class="card-content p-2">
-            <span class="font-bold block overflow-hidden white-space-nowrap text-overflow-ellipsis text-lg">{{item.productName}}</span>
-            <p class="text-gray-600 overflow-hidden white-space-nowrap text-overflow-ellipsis text-sm">{{item.productDescription}}</p>
-            <span class="text-primary font-semibold mt-1 block">{{item.productPrice}} TL</span>
+            <span class="font-bold block overflow-hidden text-ellipsis whitespace-nowrap text-base text-gray-800">
+                {{item.productName}}
+            </span>
+            <p class="text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap text-xs">
+                {{item.productDescription}}
+            </p>
+            <span class="text-primary font-semibold mt-1 block text-sm">{{item.productPrice}} TL</span>
         </div>
     </div>
 </div>
@@ -15,41 +23,79 @@
     [totalRecords]="totalItems"
     [rows]="pageSize"
     (onPageChange)="onPageChange($event)"
-    class="mt-4"
+    class="mt-3"
 ></p-paginator>
 
 <style>
+    body {
+        background-color: #f9f9f9;
+        font-family: 'Arial', sans-serif;
+    }
+
     .card {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        border: 1px solid rgb(204, 204, 204);
-        border-radius: 10px;
-        height: 260px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        height: 240px;
         width: 180px;
         background-color: #fff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: box-shadow 0.3s ease;
-    }
-    
-    .card:hover {
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-    
-    .card-image {
-        height: 60%;
-        border-radius: 10px 10px 0 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
         overflow: hidden;
+        transition: box-shadow 0.2s ease, transform 0.15s ease;
     }
-    
+
+    .card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-image {
+        height: 55%;
+        overflow: hidden;
+        background-color: #f1f1f1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .card-image img {
-        height: 100%;
-        width: 100%;
+        max-width: 100%;
+        max-height: 100%;
         object-fit: contain;
-        border-bottom: 1px solid rgb(216, 192, 148);
+        transition: transform 0.2s ease;
     }
-    
+
+    .card:hover img {
+        transform: scale(1.05);
+    }
+
     .card-content {
-        padding: 10px;
+        padding: 8px;
+    }
+
+    .text-primary {
+        color: #007bff;
+    }
+
+    .text-gray-800 {
+        color: #2d2d2d;
+    }
+
+    .text-gray-500 {
+        color: #6c757d;
+    }
+
+    .flex {
+        gap: 4px;
+    }
+
+    .p-paginator {
+        display: flex;
+        justify-content: center;
+    }
+
+    .mt-3 {
+        margin-top: 12px;
     }
 </style>

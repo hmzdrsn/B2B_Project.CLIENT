@@ -4,13 +4,16 @@ import { MessageService } from '../../../services/message.service';
 import { MessagesResponse, SendMessageRequest } from '../../../services/models/MessageRequest';
 import { GlobalmessageService } from '../../../services/globalmessage.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { NgFor } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { UserService } from '../../../services/user.service';
 import { UserMessageModel } from '../../../services/models/UserResponse';
+
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @Component({
   selector: 'app-messages',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor,NgIf,ScrollPanelModule,ProgressSpinnerModule,NgClass],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.scss'
 })
@@ -19,6 +22,7 @@ export class MessagesComponent implements OnInit {
   userService = inject(UserService);
   globMessageService = inject(GlobalmessageService);
   jwthelper = inject(JwtHelperService);
+
 
   req: SendMessageRequest = new SendMessageRequest();
   private hub: signalR.HubConnection;
@@ -54,6 +58,14 @@ export class MessagesComponent implements OnInit {
             this.Messages.push(msg)
           }
         });
+
+        this.hub.on('statusChanged', () => {
+          this.userService.getUsers().subscribe(res => {
+            this.UserList = res
+            this.selectedUser = res[0];
+          })
+        });
+
         this.userService.getUsers().subscribe(res => {
           this.UserList = res
           this.selectedUser = res[0];
@@ -63,7 +75,7 @@ export class MessagesComponent implements OnInit {
   }
   selectUser(userId: string) {
     this.selectedUser = this.UserList.find(x => x.userId == userId);
-    this.messageService.getMessages(5, 1,userId).subscribe(res => {
+    this.messageService.getMessages(10, 1,userId).subscribe(res => {
       this.Messages = res.reverse();
     })
   }
@@ -87,5 +99,29 @@ export class MessagesComponent implements OnInit {
     this.messageService.getMessages(5, 1,receiverId).subscribe(res => {
       this.Messages = res;
     })
+  }
+
+
+
+  loading: boolean = false;
+
+  onScroll(event: any) {
+    const element = event.target;
+    const scrollTop = element.scrollTop;
+
+    
+    // En üste ulaşıldığında
+    if (scrollTop === 0) {
+      console.log("Scroll position:", scrollTop);
+      this.triggerLoading();
+    }
+  }
+
+  triggerLoading() {
+    this.loading = true;
+    setTimeout(() => {
+      this.loading = false;
+      // Yeni mesajlar yüklenebilir
+    }, 2000);  // 2 saniyelik loading simülasyonu
   }
 }

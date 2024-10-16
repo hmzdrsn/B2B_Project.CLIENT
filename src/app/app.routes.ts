@@ -10,7 +10,7 @@ export const routes: Routes = [
     {
         path: 'company',
         loadChildren :()=> import('../app/pages/company/company.routes').then(c=>c.companyRoutes),
-        canActivate:[CompanyGuard]
+        canActivate:[]
     },
     {
         path: 'member',

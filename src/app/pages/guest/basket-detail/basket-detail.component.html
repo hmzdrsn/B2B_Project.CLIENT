@@ -1,5 +1,8 @@
 <div class="flex justify-content-center mt-5">
     <div class="flex flex-column w-9">
+        <div *ngIf="basketItems.length === 0" class="alert">
+            <p>Sepetinizde ürün bulunmamaktadır.</p>
+        </div>
         <div class="flex flex-column gap-3 basketItem" *ngFor="let item of basketItems">
             <div class="flex align-items-center gap-3">
                 <img src="{{item.productImageUrl}}">
@@ -67,5 +70,15 @@
         width: 160px;
         height: 1.2em;
         white-space: nowrap;
+    }
+
+    .alert {
+        border: 1px solid rgb(255, 140, 140);
+        border-radius: 5px;
+        padding: 15px;
+        text-align: center;
+        background-color: #ffe6e6;
+        color: red;
+        font-weight: bold;
     }
 </style>

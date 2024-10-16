@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, inject, NgModule, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule} from '@angular/common';
+import { CommonModule, NgFor, NgIf} from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -15,6 +15,10 @@ import { ProductService } from '../../../services/product.service';
 import { Image, ProductResponse2 } from '../../../services/models/ProductResponse';
 import { ImageService } from '../../../services/image.service';
 import { ToastModule } from 'primeng/toast';
+import { Discount, DiscountWithoutDetail } from '../../../services/models/DiscountResponse';
+import { DiscountService } from '../../../services/discount.service';
+import { GlobalmessageService } from '../../../services/globalmessage.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-updateproduct',
@@ -29,7 +33,9 @@ import { ToastModule } from 'primeng/toast';
     FloatLabelModule,
     CardModule,
     FormsModule,
-    ToastModule
+    ToastModule,
+    NgIf,
+    NgFor
   ],
   templateUrl: './updateproduct.component.html',
   styleUrl: './updateproduct.component.scss'
@@ -38,9 +44,11 @@ export class UpdateproductComponent implements OnInit {
   _categoryService : CategoryService = inject(CategoryService);
   _productService : ProductService = inject(ProductService);
   _imageService : ImageService = inject(ImageService);
-
+  _discountService: DiscountService = inject(DiscountService);
+  _messageService:GlobalmessageService=inject(GlobalmessageService);
   productForm: FormGroup;
   productId: string;
+  discounts:DiscountWithoutDetail[];
   
   Images : Image[] =[];
   productImages = [];
@@ -95,7 +103,10 @@ export class UpdateproductComponent implements OnInit {
       })
       
     });
-  
+    //5
+    this._discountService.getProductDiscount(this.productId).subscribe(res=>{
+      this.discounts = res
+    })
    
   }
   file : File;
@@ -129,4 +140,16 @@ onDelete(imageId){
     this._imageService.deleteImage(imageId);
   }
   
+
+  removeDiscount(discountId:string){
+    this._discountService.removeProductDiscount(this.productId,discountId)
+    .subscribe(res=>{
+      if(res.status==="true"){
+        this.discounts = this.discounts.filter(x=>x.discountId !=discountId);
+        this._messageService.addMessage('success','','İndirim Üründen Kaldırıldı')
+      }else{
+        this._messageService.addMessage('error','',res.message)
+      }
+    })
+  }
 }

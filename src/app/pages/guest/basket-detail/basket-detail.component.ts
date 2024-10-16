@@ -1,13 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { BasketService } from '../../../services/basket.service';
 import { BasketItem } from '../../../services/models/BasketItemResponse';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { GlobalmessageService } from '../../../services/globalmessage.service';
 
 @Component({
   selector: 'app-basket-detail',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor,NgIf],
   templateUrl: './basket-detail.component.html',
   styleUrl: './basket-detail.component.scss'
 })

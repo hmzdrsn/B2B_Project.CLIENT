@@ -20,7 +20,10 @@
                 <i class="pi pi-circle-on {{selectedUser.isOnline ? 'text-green-500' : 'text-red-500'}}"></i>
                 <span>{{selectedUser.fullName}}</span><br> 
             </div>
-            <div class="flex flex-column flex-grow-1 overflow-auto mb-2">
+            <div class="flex flex-column flex-grow-1 overflow-auto mb-2" (scroll)="onScroll($event)">
+                <div *ngIf="loading" class="loading-spinner">
+                    <p>Loading...</p> <!-- Burada loading spinner ekleyebilirsiniz -->
+                  </div>
                 <div class="message-container" *ngFor="let item of Messages"> <!--  -->
                     <div class="message" class="{{item.receiverId==selectedUser.userId ? 'sent' : 'received'}}">
                         {{item.content}}
@@ -41,7 +44,33 @@
     </div>
 </div>
 
+
+<div class="scroll-container" style="border: 1px solid; width: 200px; height: 200px;" (scroll)="onScroll($event)">
+    <div class="message-box">
+      <!-- Mesajların listelendiği kısım -->
+      <div *ngIf="loading" class="loading-spinner">
+        <p>Loading...</p> <!-- Burada loading spinner ekleyebilirsiniz -->
+      </div>
+      <p *ngFor="let message of Messages">{{ message.content }}</p>
+    </div>
+  </div>
+  
+  
+
 <style>
+    .scroll-container {
+  height: 200px;
+  width: 200px;
+  border: 1px solid;
+  overflow-y: auto;
+}
+
+.loading-spinner {
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
+}
+
     .user-card {
         width: 25%;
     }

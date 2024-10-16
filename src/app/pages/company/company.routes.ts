@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { OrderComponent } from './order/order/order.component';
 import { AddproductComponent } from './addproduct/addproduct.component';
 import { UpdateproductComponent } from './updateproduct/updateproduct.component';
+import { DiscountComponent } from './discount/discount.component';
 
 export const companyRoutes: Routes = [
     {
@@ -28,8 +29,10 @@ export const companyRoutes: Routes = [
             },
             {
                 path:'order', component: OrderComponent
+            },
+            {
+                path:'discount', component: DiscountComponent
             }
         ]
     },
-    
 ];

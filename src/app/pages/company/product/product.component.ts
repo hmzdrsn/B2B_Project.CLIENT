@@ -15,11 +15,13 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TagModule } from 'primeng/tag';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { RatingModule } from 'primeng/rating';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ProductService } from '../../../services/product.service';
 import { Product } from '../../../services/models/ProductResponse';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Discount } from '../../../services/models/DiscountResponse';
+import { DiscountService } from '../../../services/discount.service';
 
 @Component({
   selector: 'app-product',
@@ -29,11 +31,12 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
       ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, 
       InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, 
       DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, 
-      FormsModule, InputNumberModule,RouterModule],
+      FormsModule,ReactiveFormsModule, InputNumberModule,RouterModule],
     providers: [ConfirmationService],
 })
 export class ProductComponent implements OnInit{
   _productService : ProductService = inject(ProductService);
+  _discountService  = inject(DiscountService);
   _router : Router = inject(Router);
   productDialog: boolean = false;
 
@@ -45,9 +48,14 @@ export class ProductComponent implements OnInit{
 
   submitted: boolean = false;
 
-  constructor( private messageService: MessageService, private confirmationService: ConfirmationService) {}
-
+  constructor( private messageService: MessageService, private confirmationService: ConfirmationService,private formBuilder: FormBuilder) {
+    this.assignForm = this.formBuilder.group({
+      selectedDiscount: null
+    });
+  }
   ngOnInit(): void {
+   
+
     this._productService.getCompanyProducts().subscribe(
       (response) => {
         this.productList = response.products;
@@ -120,5 +128,36 @@ export class ProductComponent implements OnInit{
 editProduct(product: Product){
 this._router.navigate(['/company/product/updateproduct'],{queryParams:{productId:product.productId}})
 }
+
+
+
+//indirim atama
+displayAssignDialog  = false;
+assignForm: FormGroup;
+discounts : Discount[];
+selectedProductId:string;
+openAssignDialog(productId:string){
+  this.displayAssignDialog  = true;
+  this.selectedProductId = productId;
+  
+  if(this.discounts == null){
+    this._discountService.getCompanyDiscounts().subscribe(res=>{
+      this.discounts = res
+    })
+  }
+}
+
+onAssignDiscount(){
+  this._discountService
+  .assignDiscountToProduct(this.assignForm.value['selectedDiscount'].discountId,this.selectedProductId)
+  .subscribe(res=>{
+    if(res.status==="true"){
+      this.messageService.add({ severity: 'success', summary: '', detail: 'İndirim Tanımlandı', life: 3000 });
+    }else{
+      this.messageService.add({ severity: 'error', summary: '', detail: res.message, life: 3000 });      
+    }
+  })
+}
+
 
 }

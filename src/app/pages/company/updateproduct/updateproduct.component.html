@@ -1,81 +1,95 @@
-<div class="card p-4 mt-3">
-    <form *ngIf="productForm" [formGroup]="productForm">
-        <div class="grid p-fluid">
-            <div class="col-12 md:col-6 mb-4">
-                <p-floatLabel>
-                    <input pInputText formControlName="name" required/>
-                    <label for="name">Name</label>
-                </p-floatLabel>
+<div class="flex justify-content-center">
+    <div class="flex flex-column p-4 mt-3 w-9">
+        <div class="flex mb-5">
+            <div class="flex flex-wrap gap-4" style="margin-top: 20px;" *ngFor="let item of discounts">
+                <div
+                    style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1); width: 100%; max-width: 400px;"
+                    class="mr-2"
+                    >
+
+                    <h2 style="margin: 0; font-size: 24px; color: #333;"> {{item.discountCode}} </h2>
+                    <label >İndirim Miktarı: </label> <span *ngIf="item.isPercentage">% {{item.discountAmount}}</span>
+                    <span *ngIf="!item.isPercentage">{{item.discountAmount}} TL</span>
+                    <div class="flex justify-content-between gap-2" style="margin-top: 10px;">
+                        <button pButton label="İndirimi Düzenle" class="p-button-success p-2"></button>
+                        <button pButton label="İndirimi Kaldır" (click)="removeDiscount(item.discountId)" class="p-button-danger p-2"></button>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-12 md:col-6">
-                <p-floatLabel>
-                    <input pInputText formControlName="description" required/>
-                    <label for="description">Description</label>
-                </p-floatLabel>
-            </div>
-            <div class="col-12 md:col-6 mb-4">
-                <p-floatLabel>
-                    <p-inputNumber formControlName="price" [minFractionDigits]="2" [maxFractionDigits]="2" required></p-inputNumber>
-                    <label for="price">Price</label>
-                </p-floatLabel>
-            </div>
+        </div>
+        <form *ngIf="productForm" [formGroup]="productForm">
+            <div class="grid p-fluid">
+                <div class="col-12 md:col-6 mb-4">
+                    <p-floatLabel>
+                        <input pInputText class="p-2" formControlName="name" required />
+                        <label for="name">Name</label>
+                    </p-floatLabel>
+                </div>
 
-            <div class="col-12 md:col-6">
-                <p-floatLabel>
-                    <input pInputText formControlName="productCode" required />
-                    <label for="productCode">Product Code</label>
-                </p-floatLabel>
-            </div>
+                <div class="col-12 md:col-6">
+                    <p-floatLabel>
+                        <input pInputText class="p-2" formControlName="description" required />
+                        <label for="description">Description</label>
+                    </p-floatLabel>
+                </div>
+                <div class="col-12 md:col-6 mb-4">
+                    <p-floatLabel>
+                        <p-inputNumber inputStyleClass="p-2" formControlName="price" [minFractionDigits]="2"
+                            [maxFractionDigits]="2" required></p-inputNumber>
+                        <label for="price">Price</label>
+                    </p-floatLabel>
+                </div>
 
-            <div class="col-12 md:col-6 mb-4">
-                <p-floatLabel>
-                    <p-inputNumber formControlName="stock" [min]="0" required></p-inputNumber>
-                    <label for="stock">Stock</label>
-                </p-floatLabel>
-            </div>
+                <div class="col-12 md:col-6">
+                    <p-floatLabel>
+                        <input pInputText class="p-2" formControlName="productCode" required />
+                        <label for="productCode">Product Code</label>
+                    </p-floatLabel>
+                </div>
 
-            <div class="col-12 md:col-6">
+                <div class="col-12 md:col-6 mb-4">
+                    <p-floatLabel>
+                        <p-inputNumber inputStyleClass="p-2" formControlName="stock" [min]="0" required></p-inputNumber>
+                        <label for="stock">Stock</label>
+                    </p-floatLabel>
+                </div>
+
+                <div class="col-12 md:col-6">
                     <!-- <p-dropdown [options]="categories" optionLabel="name" formControlName="categoryId" -->
 
-                      <p-dropdown [options]="categories" optionLabel="name" formControlName="categoryId" placeholder="{{selectedCategory.name}}"
-                      required
-                      >
-                      </p-dropdown>
-              </div>
-              <div class="col-12">
+                    <p-dropdown styleClass="p-2" [options]="categories" optionLabel="name" formControlName="categoryId"
+                        placeholder="{{selectedCategory.name}}" required>
+                    </p-dropdown>
+                </div>
+                <div class="col-12">
 
-                <p-fileUpload
-                mode="advanced" 
-                name="productImages" 
-                multiple="true" 
-                maxFileSize="1000000" 
-                chooseLabel="Ürün Resmi Ekle" 
-                uploadLabel="Upload"
-                cancelLabel="İptal Et"
-                (onSelect)="onSelect($event)"
-                (onRemove)="onRemove($event)"
-                [showUploadButton]="false"
-                >
-                 <ng-template pTemplate="content">
-                    <a>Ürün Resimleri</a>
-                    <div class="gap-3" *ngFor="let item of Images">
-                        <div class="flex justify-content-between mb-3">
-                            <img style="width: 50px; height: 50px; border-radius: 20px;" src="{{item.imageUrl}}">
-                            <a>{{item.imageName}}</a>
-                            <div>
-                                <button icon="fa-close" pButton type="button" label="Resmi Sil" (click)="onDelete(item.id)"></button>
+                    <p-fileUpload mode="advanced" name="productImages" multiple="true" maxFileSize="1000000"
+                        chooseLabel="Ürün Resmi Ekle" uploadLabel="Upload" cancelLabel="İptal Et"
+                        (onSelect)="onSelect($event)" (onRemove)="onRemove($event)" [showUploadButton]="false"
+                        chooseStyleClass="p-2" cancelStyleClass="p-2">
+                        <ng-template pTemplate="content">
+                            <a>Ürün Resimleri</a>
+                            <div class="gap-3" *ngFor="let item of Images">
+                                <div class="flex justify-content-between mb-3">
+                                    <img style="width: 50px; height: 50px; border-radius: 20px;"
+                                        src="{{item.imageUrl}}">
+                                    <a>{{item.imageName}}</a>
+                                    <div>
+                                        <button class="flex gap-1 p-2" icon="pi pi-times" pButton type="button"
+                                            label="Resmi Sil" (click)="onDelete(item.id)"></button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </ng-template>
-                </p-fileUpload>
+                        </ng-template>
+                    </p-fileUpload>
+                </div>
             </div>
-        </div>
 
 
-        <div class="mt-2">
-            <p-button label="Kaydet" (onClick)="submitForm()" icon="pi pi-check"></p-button>
-        </div>
-    </form>
+            <div class="mt-2">
+                <p-button label="Kaydet" (onClick)="submitForm()" icon="pi pi-check"></p-button>
+            </div>
+        </form>
+    </div>
 </div>

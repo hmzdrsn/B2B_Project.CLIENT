@@ -55,7 +55,13 @@ export class MenubarComponent {
             icon:'pi pi-cart-arrow-down',
             basket:true,
             root: true,
-        },
+          },
+          {
+            label: 'İndirimlerim',
+            routerLink:"/company/discount",
+            icon:'pi pi-percentage',
+            root: true,
+          },
       ];
   }
 
