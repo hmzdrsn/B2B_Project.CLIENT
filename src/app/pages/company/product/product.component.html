@@ -1,55 +1,49 @@
 <div class="card flex justify-content-center">
     <p-toast />
 
-    <p-table
-        #dt
-        [value]="productList"
-        [rows]="10"
-        [paginator]="true"
-        [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
-        [tableStyle]="{ 'min-width': '20rem' }"
-        [(selection)]="selectedProducts"
-        [rowHover]="true"
-        dataKey="id"
-        currentPageReportTemplate="{totalRecords} Kayıttan {first} ile {last} arası gösteriliyor."
-        [showCurrentPageReport]="true"
-        class="w-9"
-    >
+    <p-table #dt 
+    [value]="productList" 
+    [rows]="10" 
+    [paginator]="true"
+    [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+    [tableStyle]="{ 'min-width': '20rem' }" 
+    paginatorStyleClass="mt-2"
+    [(selection)]="selectedProducts" 
+    [rowHover]="true" dataKey="id"
+    currentPageReportTemplate="{totalRecords} Kayıttan {first} ile {last} arası gösteriliyor."
+    [showCurrentPageReport]="true" 
+    class="w-9">
         <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between"  style="height: 50px;">
+            <div class="flex align-items-center justify-content-between" style="height: 50px;">
                 <div>
-                    <button class="addproduct-button" routerLink="/company/product/addproduct">
+                    <button class="addproduct-button p-2" pButton routerLink="/company/product/addproduct">
                         <i class="pi pi-plus"></i>
                         Ürün Ekle
                     </button>
                     <style>
-                        .addproduct-button{
+                        .addproduct-button {
                             background-color: rgb(92, 226, 92);
                             border: none;
                             border-radius: 5px;
-                            padding: 3px;
                             font-size: 16px;
                             color: white;
                             cursor: pointer;
                         }
-                        .addproduct-button:hover{
+
+                        .addproduct-button:hover {
                             background-color: rgb(35, 94, 35);
                         }
                     </style>
                 </div>
                 <div class="flex flex-row align-items-center">
                     <i class="pi pi-search"></i>
-                    <input
-                        class="ml-1 h-2rem"
-                        pInputText 
-                        type="text" 
-                        (input)="onFilter($event)" 
+                    <input class="ml-1 h-2rem" pInputText type="text" (input)="onFilter($event)"
                         placeholder="Search..." />
                 </div>
             </div>
             <!-- $event.target.value -->
         </ng-template>
-        
+
         <ng-template pTemplate="header">
             <tr class="h-3rem">
                 <th style="width: 4rem">
@@ -64,7 +58,7 @@
                 <th pSortableColumn="price">
                     Fiyat <p-sortIcon field="price" />
                 </th>
-                
+
                 <th pSortableColumn="price" style="min-width:10rem">
                     Stok <p-sortIcon field="price" />
                 </th>
@@ -89,27 +83,13 @@
                 <td>
                     {{ product.stock }}
                 </td>
-                
+
                 <td class="">
-                    <p-button 
-                        icon="pi pi-pencil" 
-                        class="mr-2" 
-                        [rounded]="true" 
-                        [outlined]="true" 
-                        severity="success" 
+                    <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"
                         (onClick)="editProduct(product)" />
-                        <p-button 
-                        icon="pi pi-percentage" 
-                        class="mr-2" 
-                        [rounded]="true" 
-                        [outlined]="true" 
-                        severity="primary" 
+                    <p-button icon="pi pi-percentage" class="mr-2" [rounded]="true" [outlined]="true" severity="primary"
                         (onClick)="openAssignDialog(product.productId)" />
-                    <p-button 
-                        icon="pi pi-trash" 
-                        severity="danger" 
-                        [rounded]="true" 
-                        [outlined]="true" 
+                    <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
                         (onClick)="deleteproduct(product)" />
                 </td>
             </tr>
@@ -121,96 +101,55 @@
         </ng-template>
     </p-table>
 
-    <p-dialog 
-        [(visible)]="productDialog" 
-        [style]="{ width: '450px' }" 
-        header="product Details" 
-        [modal]="true" 
+    <p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="product Details" [modal]="true"
         styleClass="p-fluid">
-            <ng-template pTemplate="content">
-                <div class="field">
-                    <label for="name">İsim</label>
-                    <input 
-                        type="text" 
-                        pInputText 
-                        id="name" 
-                        [(ngModel)]="product.name" 
-                        required 
-                        autofocus />
-                    <small class="p-error" *ngIf="submitted && !product.name">
-                        Name is required.
-                    </small>
-                </div>
+        <ng-template pTemplate="content">
+            <div class="field">
+                <label for="name">İsim</label>
+                <input type="text" pInputText id="name" [(ngModel)]="product.name" required autofocus />
+                <small class="p-error" *ngIf="submitted && !product.name">
+                    Name is required.
+                </small>
+            </div>
 
-                <div class="field">
-                    <label for="description">Açıklama</label>
-                    <textarea 
-                        id="description" 
-                        pInputTextarea 
-                        [(ngModel)]="product.description" 
-                        required 
-                        rows="3" 
-                        cols="20">
+            <div class="field">
+                <label for="description">Açıklama</label>
+                <textarea id="description" pInputTextarea [(ngModel)]="product.description" required rows="3" cols="20">
                     </textarea>
-                </div>
+            </div>
 
-                <div class="formgrid grid">
-                    <div class="field col">
-                        <label for="price">Fiyat</label>
-                        <p-inputNumber 
-                            id="price" 
-                            [(ngModel)]="product.price" 
-                            mode="currency" 
-                            currency="USD" 
-                            locale="en-US" />
-                    </div>
-                    <div class="field col">
-                        <label for="quantity">Stok</label>
-                        <p-inputNumber 
-                            id="quantity" 
-                            [(ngModel)]="product.stock" />
-                    </div>
+            <div class="formgrid grid">
+                <div class="field col">
+                    <label for="price">Fiyat</label>
+                    <p-inputNumber id="price" [(ngModel)]="product.price" mode="currency" currency="USD"
+                        locale="en-US" />
                 </div>
-            </ng-template>
+                <div class="field col">
+                    <label for="quantity">Stok</label>
+                    <p-inputNumber id="quantity" [(ngModel)]="product.stock" />
+                </div>
+            </div>
+        </ng-template>
 
-            <ng-template pTemplate="footer">
-                <p-button 
-                    label="Cancel" 
-                    icon="pi pi-times" 
-                    [text]="true" 
-                    (onClick)="hideDialog()" />
-                <p-button
-                    label="Save" 
-                    icon="pi pi-check" 
-                    [text]="true" 
-                    (onClick)="saveproduct()" />
-            </ng-template>
+        <ng-template pTemplate="footer">
+            <p-button label="Cancel" icon="pi pi-times" [text]="true" (onClick)="hideDialog()" />
+            <p-button label="Save" icon="pi pi-check" [text]="true" (onClick)="saveproduct()" />
+        </ng-template>
     </p-dialog>
 
 
-    <p-dialog 
-  header="Ürüne İndirim Ata" 
-  [(visible)]="displayAssignDialog" 
-  [modal]="true" 
-  [closable]="true" 
-  [responsive]="true" 
-  [style]="{width: '25vw', height: 'auto', 'max-height': '80vh'}" 
-  [contentStyle]="{'overflow': 'auto'}">
-    <form [formGroup]="assignForm" (ngSubmit)="onAssignDiscount()"
-        class="flex p-fluid p-5 gap-4">
-        
-        <p-dropdown 
-            formControlName="selectedDiscount" 
-            [options]="discounts" 
-            optionLabel="discountCode"
-            placeholder="İndirim Seçiniz" 
-            class="w-full"
-            [appendTo]="'body'">
-        </p-dropdown>
+    <p-dialog header="Ürüne İndirim Ata" [(visible)]="displayAssignDialog" [modal]="true" [closable]="true"
+        [responsive]="true" [style]="{width: '25vw', height: 'auto', 'max-height': '80vh'}"
+        [contentStyle]="{'overflow': 'auto'}">
+        <form [formGroup]="assignForm" (ngSubmit)="onAssignDiscount()" class="flex p-fluid p-5 gap-4">
 
-        <button pButton type="submit" label="İndirimi Ata" class="p-button-success p-2"></button>
-    </form>
-</p-dialog>
+            <p-dropdown formControlName="selectedDiscount" [options]="discounts" optionLabel="discountCode"
+                placeholder="İndirim Seçiniz" class="w-full" [appendTo]="'body'">
+            </p-dropdown>
+
+            <button pButton type="submit" label="İndirimi Ata" class="p-button-success p-2"></button>
+        </form>
+    </p-dialog>
 
     <p-confirmDialog [style]="{ width: '450px' }" />
 </div>

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { DiscountService } from '../../../services/discount.service';
 import { Discount, ProductDiscount, UserDiscount } from '../../../services/models/DiscountResponse';
-import { DatePipe, NgFor, NgIf, registerLocaleData } from '@angular/common';
+import { CommonModule, DatePipe, NgFor, NgIf, registerLocaleData } from '@angular/common';
 import localeTr from '@angular/common/locales/tr';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -16,10 +16,11 @@ import { ProductService } from '../../../services/product.service';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TableModule } from 'primeng/table';
+import { DarkModeService } from '../../../services/dark-mode.service';
 @Component({
   selector: 'app-discount',
   standalone: true,
-  imports: [NgFor, NgIf, DatePipe, InputTextModule, InputNumberModule, CalendarModule, ButtonModule, ReactiveFormsModule, DialogModule, DropdownModule, ConfirmDialogModule, FormsModule, ReactiveFormsModule, TableModule],
+  imports: [NgFor, NgIf, DatePipe, InputTextModule, InputNumberModule, CalendarModule, ButtonModule, ReactiveFormsModule, DialogModule, DropdownModule, ConfirmDialogModule, FormsModule, ReactiveFormsModule, TableModule,CommonModule],
   templateUrl: './discount.component.html',
   styleUrl: './discount.component.scss',
   providers: [ConfirmationService],
@@ -28,12 +29,14 @@ export class DiscountComponent implements OnInit {
   discountService = inject(DiscountService);
   productService = inject(ProductService);
   messageService = inject(GlobalmessageService);
+  darkModeService = inject(DarkModeService);
   _confirmationService = inject(ConfirmationService);
   discounts: Discount[] = [];
   discountForm: FormGroup;
   discount: Discount = new Discount();
   userDiscounts: UserDiscount[];
   productDiscounts: ProductDiscount[];
+  isDarkMode :boolean=false;
   constructor(private formBuilder: FormBuilder) {
     registerLocaleData(localeTr);
     this.assignForm = this.formBuilder.group({
@@ -42,6 +45,10 @@ export class DiscountComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.darkModeService.darkMode$.subscribe((isDark) => {
+      this.isDarkMode = isDark;
+    });
+
     this.discountService
       .getUserDiscounts()
       .subscribe(res => {

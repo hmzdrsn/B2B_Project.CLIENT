@@ -1,6 +1,6 @@
 <div class="flex justify-content-center mt-5">
-    <div class="w-9 card p-4">
-        <form [formGroup]="productForm">
+    <div class="w-9 p-4 border-round">
+        <form  [formGroup]="productForm">
             <div class="grid p-fluid">
                 <!-- Name Field -->
                 <div class="col-12 md:col-6 mb-4">
@@ -13,23 +13,33 @@
                             [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}"
                         />
                         <label for="name">Name</label>
-                        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="error-message">
-                            {{ name.errors | json }}
-                        </div>
                     </p-floatLabel>
+                    <div *ngIf="name.invalid && (name.dirty || name.touched)" class="flex error-message">
+                        <div *ngIf="name.errors?.['required']">Bu alan zorunludur</div>
+                        <div *ngIf="name.errors?.['minlength']">
+                            En az {{ name.errors?.['minlength']?.requiredLength }} karakter olmalı (Şu an {{ name.errors?.['minlength']?.actualLength }} karakter).
+                        </div>
+                        <i class="pi pi-times text-red"></i>
+                    </div>
                 </div>
-
+                
                 <!-- Description Field -->
                 <div class="col-12 md:col-6 mb-4">
                     <p-floatLabel>
                         <input 
-                            id="description"
-                            class="inputStyles" 
-                            pInputText 
-                            formControlName="description"
+                        id="description"
+                        class="inputStyles" 
+                        pInputText 
+                        formControlName="description"
                         />
                         <label for="description">Description</label>
                     </p-floatLabel>
+                    <div *ngIf="description.invalid && (description.dirty || description.touched)" class="flex error-message">
+                        <div *ngIf="description.errors?.['required']">Bu alan zorunludur.</div>
+                        <div *ngIf="description.errors?.['minlength']">
+                            En az {{ description.errors?.['minlength']?.requiredLength }} karakter olmalı (Şu an {{ description.errors?.['minlength']?.actualLength }} karakter).
+                          </div><i class="pi pi-times text-red"></i>
+                    </div>
                 </div>
 
                 <!-- Price Field -->
@@ -37,14 +47,17 @@
                     <p-floatLabel>
                         <p-inputNumber 
                             id="price"
-                            class="inputStyles" 
+                            inputStyleClass="p-2" 
                             formControlName="price"
                             [minFractionDigits]="2"
                             [maxFractionDigits]="2"
-                            [ngClass]="{'is-invalid': price.invalid && (price.dirty || price.touched)}"
                         ></p-inputNumber>
                         <label for="price">Price</label>
                     </p-floatLabel>
+                    <div *ngIf="price.invalid && (price.dirty || price.touched)" class="flex error-message">
+                        <div *ngIf="price.errors?.['required']">Bu alan zorunludur.</div>
+                        <i class="pi pi-times text-red"></i>
+                    </div>
                 </div>
 
                 <!-- Product Code Field -->
@@ -58,6 +71,10 @@
                         />
                         <label for="productCode">Product Code</label>
                     </p-floatLabel>
+                    <div *ngIf="productCode.invalid && (productCode.dirty || productCode.touched)" class="flex error-message">
+                        <div *ngIf="productCode.errors?.['required']">Bu alan zorunludur.</div>
+                        <i class="pi pi-times text-red"></i>
+                    </div>
                 </div>
 
                 <!-- Stock Field -->
@@ -65,12 +82,17 @@
                     <p-floatLabel>
                         <p-inputNumber 
                             id="stock"
-                            class="inputStyles" 
+                            inputStyleClass="p-2" 
                             formControlName="stock" 
                             [min]="0"
                         ></p-inputNumber>
                         <label for="stock">Stock</label>
+                        
                     </p-floatLabel>
+                    <div *ngIf="stock.invalid && (stock.dirty || stock.touched)" class="flex error-message">
+                        <div *ngIf="stock.errors?.['required']">Bu alan zorunludur.</div>
+                        <i class="pi pi-times text-red"></i>
+                    </div>
                 </div>
 
                 <!-- Category Dropdown -->
@@ -81,9 +103,14 @@
                             [options]="categories" 
                             optionLabel="name" 
                             formControlName="categoryId"
+                            styleClass="p-2"
                         ></p-dropdown>
                         <label for="categoryId">Category</label>
                     </p-floatLabel>
+                    <div *ngIf="categoryId.invalid && (categoryId.dirty || categoryId.touched)" class="flex error-message">
+                        <div *ngIf="categoryId.errors?.['required']">Bu alan zorunludur.</div>
+                        <i class="pi pi-times text-red"></i>
+                    </div>
                 </div>
 
                 <!-- File Upload -->
@@ -100,6 +127,8 @@
                         (onSelect)="onSelect($event)"
                         (onRemove)="onRemove($event)"
                         [showUploadButton]="false"
+                        chooseStyleClass="p-2"
+                        cancelStyleClass="p-2"
                     ></p-fileUpload>
                 </div>
             </div>
@@ -111,7 +140,9 @@
                     icon="pi pi-check" 
                     type="submit"
                     (onClick)="submitForm()"
-                    class="w-full"
+                    styleClass="p-2"
+                    severity="success"
+                    iconPos="right"
                 ></p-button>
             </div>
         </form>
@@ -143,11 +174,6 @@
         margin-top: 4px;
     }
 
-    .card {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 12px;
-        background-color: #fff;
-    }
 
     .mt-4 {
         margin-top: 16px;

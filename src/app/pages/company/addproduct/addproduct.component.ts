@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, runInInjectionContext } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
@@ -14,6 +14,8 @@ import { ProductRequest } from '../../../services/models/ProductRequest';
 import { ProductService } from '../../../services/product.service';
 import { LoginComponent } from '../../guest/login/login.component';
 import { HttpClient } from '@angular/common/http';
+import { GlobalmessageService } from '../../../services/globalmessage.service';
+import { DarkModeService } from '../../../services/dark-mode.service';
 
 @Component({
   selector: 'app-addproduct',
@@ -33,6 +35,9 @@ import { HttpClient } from '@angular/common/http';
 export class AddproductComponent implements OnInit  {
  _categoryService : CategoryService = inject(CategoryService);
  _productService : ProductService = inject(ProductService);
+ _messageService = inject(GlobalmessageService);
+ darkModeService = inject(DarkModeService);
+ isDarkMode :boolean=false;
   productForm!: FormGroup;
   categories : Category[] = [];
   files: File[] = [];
@@ -41,7 +46,10 @@ export class AddproductComponent implements OnInit  {
 
   constructor(private fb: FormBuilder) {}
   ngOnInit(): void {
-
+    this.darkModeService.darkMode$.subscribe((isDark) => {
+      this.isDarkMode = isDark;
+    });
+    
     this._categoryService.getCategories().subscribe(
       (response) => {
         this.categories = response.categories;
@@ -52,21 +60,33 @@ export class AddproductComponent implements OnInit  {
       }
     );
     this.productForm = this.fb.group({
-      name: ['',Validators.required,Validators.minLength(3)],
-      description: [''],
-      price: [null],
-      productCode: [''],
-      stock: [null],
-      categoryId: [null],
-      productImages: [null]
+      name: ['', [Validators.required, Validators.minLength(5)]], // En az 3 karakter uzunluğunda olmalı
+      description: ['', [Validators.required, Validators.minLength(20)]], // En az 20 karakter uzunluğunda olmalı
+      price: [null, [Validators.required, Validators.min(0)]], // Fiyat gerekli ve negatif olamaz
+      productCode: ['', [Validators.required, Validators.pattern('^[A-Z0-9_-]{3,10}$')]], 
+      stock: [null, [Validators.required, Validators.min(0), Validators.max(10000)]],
+      categoryId: [null, [Validators.required]], // Kategori ID'si zorunlu
+      productImages: [null, [Validators.required]] 
     });
+    
   }
   get name(){
     return this.productForm.get("name");
   }
- 
+  get description(){
+    return this.productForm.get("description");
+  }
   get price(){
     return this.productForm.get("price");
+  }
+  get productCode(){
+    return this.productForm.get("productCode");
+  }
+  get stock(){
+    return this.productForm.get("stock");
+  }
+  get categoryId(){
+    return this.productForm.get("categoryId");
   }
 
   onSelect(event: any) {
@@ -85,6 +105,7 @@ export class AddproductComponent implements OnInit  {
     console.log("onUpload");
   }
   submitForm(): void {
+    if(this.productForm.valid){
       const formData = new FormData();
       const price = this.productForm.value['price'].toString().replace('.',',')
       console.log(price);
@@ -100,5 +121,8 @@ export class AddproductComponent implements OnInit  {
       
     console.log(formData.get('ProductImages'));
     this._productService.createProduct(formData);
+    }else{
+      this._messageService.addMessage("error","","Giriş değerlerinizi kontrol ediniz!")
+    }
   }
 }
