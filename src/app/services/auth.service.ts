@@ -4,6 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,14 @@ export class AuthService {
   roles : any[] = [];
   private httpClient = inject(HttpClient)
   private router: Router = inject(Router);
+  baseUrl : string;
+  constructor(){
+    this.baseUrl = environment.apiUrl;
+  }
   async login(frm: FormGroup) : Promise<boolean>{
     this.loadingSubject.next(true); // İstek başlamadan önce loading'i true yapın
     try {
-        const res = await this.httpClient.post<any>("https://localhost:8001/api/User/Login", frm.value).toPromise();
+        const res = await this.httpClient.post<any>(`${this.baseUrl}api/User/Login`, frm.value).toPromise();
         
         localStorage.setItem("token", res.data.token.accessToken);
 
@@ -64,7 +69,7 @@ export class AuthService {
 
   getUserRoles(): Promise<any> {
       return new Promise((resolve, reject) => {
-          this.httpClient.get<any[]>("https://localhost:8001/api/Role/GetUserRoles")
+          this.httpClient.get<any[]>(`${this.baseUrl}api/Role/GetUserRoles`)
           .subscribe(res => {
               this.roles = res;
               resolve(res);
@@ -77,7 +82,7 @@ export class AuthService {
   
   public async getRoles() : Promise<any[]> {
     if (this.roles.length === 0) {
-      // Eğer roller yüklenmemişse, rolleri yükleyin
+      // Eğer roller yüklenmemişse, rolleri yükleme islemi
       await this.getUserRoles();
     }
     return this.roles;
