@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  private loadingSubject = new BehaviorSubject<boolean>(false);
+  loadingSubject = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingSubject.asObservable(); // Observable olarak expose edin
   isAuthenticated: boolean = false;
   roles : any[] = [];

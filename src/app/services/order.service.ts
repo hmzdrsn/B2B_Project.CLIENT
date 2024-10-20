@@ -31,7 +31,6 @@ export class OrderService {
     
     createOrder(): Observable<any> {
         return this._httpClient.post(`${this.baseUrl}api/Order/CreateOrder`, null)
-            .pipe(map(res => res));
     }
     
     getOrdersByUser(): Observable<UserOrders[]> {

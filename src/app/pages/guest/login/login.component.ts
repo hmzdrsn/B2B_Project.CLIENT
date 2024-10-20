@@ -38,7 +38,7 @@ export class LoginComponent {
     // Burada API'ye istek
     const res = await this.authService.login(this.frm);
 
-    await this.authService.loading$.subscribe(loading => {
+    this.authService.loading$.subscribe(loading => {
       this.loading = loading;
     });
     

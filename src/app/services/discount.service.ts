@@ -21,22 +21,18 @@ export class DiscountService {
 
   createDiscount(discount: Discount): Observable<ResponseModel<null>> {
     return this._httpClient.post<ResponseModel<null>>(`${this.baseUrl}api/Discount/CreateDiscount`, discount)
-      .pipe(map(res => res));
   }
 
   removeDiscount(discountId: string): Observable<ResponseModel<null>> {
     return this._httpClient.post<ResponseModel<null>>(`${this.baseUrl}api/Discount/RemoveDiscount?discountId=${discountId}`, null)
-      .pipe(map(res => res));
   }
 
   assignDiscountToProduct(discountId: string, productId: string): Observable<ResponseModel<null>> {
     return this._httpClient.post<ResponseModel<null>>(`${this.baseUrl}api/Discount/AssignDiscountToProduct?productId=${productId}&discountId=${discountId}`, null)
-      .pipe(map(res => res));
   }
 
   assignDiscountToUser(discountId: string, usernameTo: string): Observable<ResponseModel<null>> {
     return this._httpClient.post<ResponseModel<null>>(`${this.baseUrl}api/Discount/AssignDiscountToUser?usernameTo=${usernameTo}&discountId=${discountId}`, null)
-      .pipe(map(res => res));
   }
 
   getProductDiscount(productId: string): Observable<DiscountWithoutDetail[]> {
@@ -49,18 +45,15 @@ export class DiscountService {
       productId: productId,
       discountId: discountId
     };
-    return this._httpClient.post<ResponseModel<null>>(`${this.baseUrl}api/Discount/RemoveProductDiscount`, body)
-      .pipe(map(res => res));
+    return this._httpClient.post<ResponseModel<null>>(`${this.baseUrl}api/Discount/RemoveProductDiscount`, body);
   }
 
   removeUserDiscount(userDiscountId: string): Observable<ResponseModel<null>> {
-    return this._httpClient.post<ResponseModel<null>>(`${this.baseUrl}api/Discount/RemoveUserDiscount?userDiscountId=${userDiscountId}`, null)
-      .pipe(map(res => res));
+    return this._httpClient.post<ResponseModel<null>>(`${this.baseUrl}api/Discount/RemoveUserDiscount?userDiscountId=${userDiscountId}`, null);
   }
 
   removeProductDiscountById(productDiscountId: string): Observable<ResponseModel<null>> {
-    return this._httpClient.post<ResponseModel<null>>(`${this.baseUrl}api/Discount/RemoveProductDiscountById?productDiscountId=${productDiscountId}`, null)
-      .pipe(map(res => res));
+    return this._httpClient.post<ResponseModel<null>>(`${this.baseUrl}api/Discount/RemoveProductDiscountById?productDiscountId=${productDiscountId}`, null);
   }
 
   getUserDiscounts(): Observable<UserDiscount[]> {
